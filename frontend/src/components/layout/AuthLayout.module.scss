@@ -1,0 +1,35 @@
+@use '../../styles/variables' as *;
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.left {
+  position: relative;
+  z-index: 1;
+  width: 562px;
+  flex-shrink: 0;
+  background: $color-grey-50;
+  padding: 55px 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+.logo {
+  width: 180px;
+  height: auto;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+}

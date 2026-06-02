@@ -1,0 +1,102 @@
+@use 'variables' as *;
+
+.authTitle {
+  font-family: $font-primary;
+  font-size: $text-4xl;
+  font-weight: $font-bold;
+  color: $color-primary;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  label {
+    font-family: $font-secondary;
+    font-size: $text-sm;
+    font-weight: $font-regular;
+    color: $color-black;
+  }
+
+  input {
+    width: 100%;
+    height: 53px;
+    padding: 0 17px;
+    background: $color-white;
+    border: 1px solid $color-grey-200;
+    border-radius: $border-radius-sm;
+    font-family: $font-secondary;
+    font-size: $text-sm;
+    color: $color-grey-800;
+    transition: border-color 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
+  }
+}
+
+.btnSubmit {
+  width: 100%;
+  height: 50px;
+  background: $color-grey-800;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  font-weight: $font-regular;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover:not(:disabled) { opacity: 0.85; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btnForgot {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-primary;
+  text-decoration: underline;
+  text-align: center;
+
+  &:hover { opacity: 0.8; }
+}
+
+.authError {
+  width: 100%;
+  padding: 8px 12px;
+  background: $color-danger-bg;
+  border: 1px solid $color-danger-border;
+  border-radius: $border-radius-sm;
+  font-size: $text-sm;
+  color: $color-danger;
+}
+
+.authSwitch {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-black;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    color: $color-primary;
+    text-decoration: underline;
+    &:hover { opacity: 0.8; }
+  }
+}

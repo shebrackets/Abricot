@@ -36,7 +36,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? ["https://votre-domaine.com"]
-        : ["http://localhost:8000", "http://localhost:8001"],
+        : ["http://localhost:3000", "http://localhost:8000"],
     credentials: true,
   })
 );
@@ -60,12 +60,12 @@ app.use(
 );
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/projects", projectRoutes);
-app.use("/dashboard", dashboardRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 // Route pour la recherche d'utilisateurs
-app.get("/users/search", authenticateToken, searchUsers);
+app.get("/api/users/search", authenticateToken, searchUsers);
 
 // Route de santé
 app.get("/health", (req, res) => {
@@ -85,34 +85,34 @@ app.get("/", (req, res) => {
     version: "1.0.0",
     endpoints: {
       auth: {
-        register: "POST /auth/register",
-        login: "POST /auth/login",
-        profile: "GET /auth/profile",
-        updateProfile: "PUT /auth/profile",
-        updatePassword: "PUT /auth/password",
+        register: "POST /api/auth/register",
+        login: "POST /api/auth/login",
+        profile: "GET /api/auth/profile",
+        updateProfile: "PUT /api/auth/profile",
+        updatePassword: "PUT /api/auth/password",
       },
       projects: {
-        create: "POST /projects",
-        getAll: "GET /projects",
-        getOne: "GET /projects/:id",
-        update: "PUT /projects/:id",
-        delete: "DELETE /projects/:id",
-        addContributor: "POST /projects/:id/contributors",
-        removeContributor: "DELETE /projects/:id/contributors/:userId",
+        create: "POST /api/projects",
+        getAll: "GET /api/projects",
+        getOne: "GET /api/projects/:id",
+        update: "PUT /api/projects/:id",
+        delete: "DELETE /api/projects/:id",
+        addContributor: "POST /api/projects/:id/contributors",
+        removeContributor: "DELETE /api/projects/:id/contributors/:userId",
       },
       tasks: {
-        create: "POST /projects/:id/tasks",
-        getAll: "GET /projects/:id/tasks",
-        getOne: "GET /projects/:id/tasks/:taskId",
-        update: "PUT /projects/:id/tasks/:taskId",
-        delete: "DELETE /projects/:id/tasks/:taskId",
+        create: "POST /api/projects/:id/tasks",
+        getAll: "GET /api/projects/:id/tasks",
+        getOne: "GET /api/projects/:id/tasks/:taskId",
+        update: "PUT /api/projects/:id/tasks/:taskId",
+        delete: "DELETE /api/projects/:id/tasks/:taskId",
       },
       comments: {
-        create: "POST /projects/:id/tasks/:taskId/comments",
-        getAll: "GET /projects/:id/tasks/:taskId/comments",
-        getOne: "GET /projects/:id/tasks/:taskId/comments/:commentId",
-        update: "PUT /projects/:id/tasks/:taskId/comments/:commentId",
-        delete: "DELETE /projects/:id/tasks/:taskId/comments/:commentId",
+        create: "POST /api/projects/:id/tasks/:taskId/comments",
+        getAll: "GET /api/projects/:id/tasks/:taskId/comments",
+        getOne: "GET /api/projects/:id/tasks/:taskId/comments/:commentId",
+        update: "PUT /api/projects/:id/tasks/:taskId/comments/:commentId",
+        delete: "DELETE /api/projects/:id/tasks/:taskId/comments/:commentId",
       },
       health: "GET /health",
     },
@@ -152,16 +152,14 @@ app.use(
 // Fonction pour démarrer le serveur
 const startServer = async () => {
   try {
-    // Tester la connexion à la base de données
     await prisma.$connect();
     console.log("✅ Connexion à la base de données établie");
 
-    // Démarrer le serveur
     app.listen(PORT, () => {
       console.log(`🚀 Serveur démarré sur le port ${PORT}`);
       console.log(`📊 Environnement: ${process.env.NODE_ENV || "development"}`);
       console.log(`🔗 URL: http://localhost:${PORT}`);
-      console.log(`📖 Documentation: http://localhost:${PORT}`);
+      console.log(`📖 Documentation: http://localhost:${PORT}/api-docs`);
     });
   } catch (error) {
     console.error("❌ Erreur lors du démarrage du serveur:", error);
@@ -182,5 +180,4 @@ process.on("SIGTERM", async () => {
   process.exit(0);
 });
 
-// Démarrer le serveur
 startServer();

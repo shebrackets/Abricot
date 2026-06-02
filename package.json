@@ -6,7 +6,10 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "run-p dev:front dev:back",
+    "dev:back": "npx kill-port 8000 && nodemon src/index.ts",
+    "dev:front": "npx kill-port 3000 && npm run dev --prefix frontend",
+    "kill": "npx kill-port 8000 3000",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
@@ -14,14 +17,7 @@
     "seed": "ts-node scripts/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "nodejs",
-    "express",
-    "typescript",
-    "prisma",
-    "jwt",
-    "authentication"
-  ],
+  "keywords": ["nodejs", "express", "typescript", "prisma", "jwt", "authentication"],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -45,7 +41,10 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.10.5",
+    "concurrently": "^10.0.0",
+    "kill-port": "^2.0.1",
     "nodemon": "^3.0.2",
+    "npm-run-all2": "^9.0.1",
     "prisma": "^6.19.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
