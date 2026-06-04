@@ -25,7 +25,7 @@ export default function LoginPage() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.message || 'Identifiants incorrects'); return }
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('token', data.data.token)
       router.push('/dashboard')
     } catch {
       setError('Erreur de connexion au serveur')

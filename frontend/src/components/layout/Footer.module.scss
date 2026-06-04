@@ -1,0 +1,21 @@
+@use '../../styles/variables' as *;
+
+.footer {
+  background: $color-white;
+  height: $footer-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.logo {
+  width: 101px;
+  height: auto;
+}
+
+.copy {
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-black;
+}

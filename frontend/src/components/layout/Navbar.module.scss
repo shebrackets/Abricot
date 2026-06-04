@@ -1,0 +1,66 @@
+@use '../../styles/variables' as *;
+
+.navbar {
+  background: $color-white;
+  height: $navbar-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 100px;
+  box-shadow: 0px 4px 12px 1px rgba(0, 0, 0, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  width: 147px;
+  height: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 27px 62px;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-primary;
+  cursor: pointer;
+  text-decoration: none;
+  background: $color-white;
+  border: none;
+  transition: background 0.15s;
+
+  &.active {
+    background: $color-grey-950;
+    color: $color-white;
+  }
+
+  &:hover:not(.active) {
+    background: $color-grey-50;
+  }
+}
+
+.userIcon {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: $color-primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  letter-spacing: 0.28px;
+  cursor: pointer;
+}

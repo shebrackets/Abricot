@@ -1,0 +1,100 @@
+@use '../../styles/variables' as *;
+
+.card {
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 40px;
+  width: 100%;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $color-black;
+}
+
+.description {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.separator {
+  color: $color-grey-400;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 37px;
+}
+
+.tag {
+  padding: 4px 16px;
+  border-radius: $border-radius-xl;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+
+  &.todo {
+    background: $color-danger-light;
+    color: $color-danger;
+  }
+
+  &.inProgress {
+    background: $color-warning-light;
+    color: $color-warning;
+  }
+
+  &.done {
+    background: $color-success-light;
+    color: $color-success;
+  }
+}
+
+.btn {
+  width: 121px;
+  height: 50px;
+  background: $color-grey-800;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.85; }
+}
