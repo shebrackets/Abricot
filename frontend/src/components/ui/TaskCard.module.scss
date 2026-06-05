@@ -1,5 +1,3 @@
-@use '../../styles/variables' as *;
-
 .card {
   background: $color-white;
   border: 1px solid $color-grey-200;
@@ -68,20 +66,9 @@
   font-family: $font-secondary;
   font-size: $text-sm;
 
-  &.todo {
-    background: $color-danger-light;
-    color: $color-danger;
-  }
-
-  &.inProgress {
-    background: $color-warning-light;
-    color: $color-warning;
-  }
-
-  &.done {
-    background: $color-success-light;
-    color: $color-success;
-  }
+  &.todo { background: $color-danger-light; color: $color-danger; }
+  &.inProgress { background: $color-warning-light; color: $color-warning; }
+  &.done { background: $color-success-light; color: $color-success; }
 }
 
 .btn {
@@ -97,4 +84,21 @@
   transition: opacity 0.15s;
 
   &:hover { opacity: 0.85; }
+}
+
+.kanbanCard {
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kanbanTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
 }

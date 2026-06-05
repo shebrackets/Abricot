@@ -19,7 +19,8 @@
     "strictFunctionTypes": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
+    "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": ["./src/*"]
     }

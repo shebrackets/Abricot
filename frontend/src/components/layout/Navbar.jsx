@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import logo from '@/assets/logo.svg'
-import { iconDashboard, iconDashboardOrange, iconProjects } from '@/assets/icons'
+import { iconDashboard, iconDashboardOrange, iconProjects, iconProjectsWhite } from '@/assets/icons'
 import styles from './Navbar.module.scss'
 
 export default function Navbar({ user }) {
@@ -31,7 +31,12 @@ export default function Navbar({ user }) {
           href="/projects"
           className={`${styles.navItem} ${router.pathname === '/projects' ? styles.active : ''}`}
         >
-          <Image src={iconProjects} alt="" width={29} height={22} />
+          <Image
+            src={router.pathname.startsWith('/projects') ? iconProjectsWhite : iconProjects}
+            alt=""
+            width={29}
+            height={22}
+          />
           Projets
         </Link>
       </div>

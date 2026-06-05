@@ -22,12 +22,13 @@ export default function DashboardPage() {
 
     const fetchTasks = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/dashboard`, {
+        const res = await fetch(`${API_URL}/api/dashboard/assigned-tasks`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (res.ok) {
           const data = await res.json()
-          setTasks(data.data?.assignedTasks || [])
+          console.log('dashboard data:', data)
+          setTasks(data.data.tasks || [])
         }
       } catch (err) {
         console.error(err)

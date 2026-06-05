@@ -1,0 +1,57 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 60px 0 30px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $text-2xl;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
+}
+
+.subtitle {
+  font-family: $font-secondary;
+  font-size: $text-lg;
+  color: $color-black;
+}
+
+.btnCreate {
+  height: 50px;
+  padding: 0 24px;
+  background: $color-grey-800;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.85; }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 60px;
+}
+
+.empty {
+  text-align: center;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-grey-600;
+  padding: 60px 0;
+  grid-column: 1 / -1;
+}

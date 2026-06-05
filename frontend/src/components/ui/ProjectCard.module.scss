@@ -1,0 +1,148 @@
+.card {
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  padding: 30px 34px;
+  gap: 56px;  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name {
+  font-family: $font-primary;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
+}
+
+.description {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
+  line-height: 1.5;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+}
+
+.progressLabel {
+  color: $color-grey-600;
+}
+
+.progressValue {
+  color: $color-grey-800;
+  font-weight: $font-semibold;
+}
+
+.progressBar {
+  width: 100%;
+  height: 7px;
+  background: $color-grey-200;
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: $color-primary;
+  border-radius: 40px;
+  transition: width 0.3s;
+}
+
+.progressTasks {
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.teamLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.teamIcon {
+  width: 12px;
+  height: 11px;
+}
+
+.contributors {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: $color-primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  border: 1px solid $color-white;
+
+  &.other {
+    background: $color-grey-200;
+  }
+}
+
+.ownerTag {
+  background: $color-primary-light;
+  color: $color-primary;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  padding: 4px 16px;
+  border-radius: $border-radius-xl;
+}

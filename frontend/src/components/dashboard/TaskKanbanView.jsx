@@ -22,7 +22,7 @@ export default function TaskKanbanView({ tasks }) {
               {colTasks.length === 0 ? (
                 <p className={styles.empty}>Aucune tâche</p>
               ) : (
-                colTasks.map((task) => <TaskCard key={task.id} task={task} />)
+                colTasks.map((task) => <TaskCard key={task.id} task={task} variant="kanban" />)
               )}
             </div>
           </div>

@@ -30,7 +30,7 @@ export default function TaskListView({ tasks, search, onSearch }) {
         {filteredTasks.length === 0 ? (
           <p className={styles.empty}>Aucune tâche assignée</p>
         ) : (
-          filteredTasks.map((task) => <TaskCard key={task.id} task={task} />)
+          filteredTasks.map((task) => <TaskCard key={task.id} task={task} variant="list" />)
         )}
       </div>
     </div>
