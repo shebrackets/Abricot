@@ -1,0 +1,176 @@
+.card {
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  padding: 25px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.topLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $color-black;
+}
+
+.description {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
+}
+
+.tag {
+  padding: 4px 16px;
+  border-radius: $border-radius-xl;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  white-space: nowrap;
+
+  &.todo { background: $color-danger-light; color: $color-danger; }
+  &.inProgress { background: $color-warning-light; color: $color-warning; }
+  &.done { background: $color-success-light; color: $color-success; }
+}
+
+.moreBtn {
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  width: 57px;
+  height: 57px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+
+  &:hover { background: $color-grey-50; }
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.metaLabel {
+  margin-right: 4px;
+}
+
+.metaDate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $color-grey-800;
+}
+
+.assignees {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.assigneeItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: $color-grey-200;
+  border: 1px solid $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.assigneeName {
+  background: $color-grey-200;
+  color: $color-grey-600;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  padding: 4px 16px;
+  border-radius: $border-radius-xl;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: $color-grey-200;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 0;
+}
+
+.commentsLabel {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-800;
+}
+
+.chevron {
+  transition: transform 0.2s;
+  &.open { transform: rotate(180deg); }
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
+  padding: 12px;
+  background: $color-grey-50;
+  border-radius: $border-radius-md;
+}
+
+.commentAuthor {
+  font-weight: $font-semibold;
+  color: $color-grey-800;
+  margin-bottom: 4px;
+}

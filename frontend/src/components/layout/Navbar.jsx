@@ -29,7 +29,7 @@ export default function Navbar({ user }) {
         </Link>
         <Link
           href="/projects"
-          className={`${styles.navItem} ${router.pathname === '/projects' ? styles.active : ''}`}
+          className={`${styles.navItem} ${router.pathname.startsWith('/projects') ? styles.active : ''}`}
         >
           <Image
             src={router.pathname.startsWith('/projects') ? iconProjectsWhite : iconProjects}
