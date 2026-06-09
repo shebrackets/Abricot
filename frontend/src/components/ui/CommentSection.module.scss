@@ -1,0 +1,185 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.commentList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.avatar {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: $color-grey-200;
+  border: 1px solid $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+}
+
+.bubble {
+  background: $color-grey-100;
+  border-radius: $border-radius-lg;
+  padding: 18px 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bubbleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.author {
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-black;
+  font-weight: $font-semibold;
+}
+
+.date {
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.content {
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-black;
+  line-height: 1.5;
+}
+
+.addComment {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.userAvatar {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  border: 1px solid $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+}
+
+.placeholder {
+  flex: 1;
+  background: $color-grey-50;
+  border-radius: $border-radius-lg;
+  padding: 18px 14px;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-black;
+  cursor: text;
+  min-height: 83px;
+  border: none;
+  text-align: left;
+  transition: background 0.15s;
+
+  &:hover { background: $color-grey-200; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.editBubble {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  textarea {
+    width: 100%;
+    background: $color-grey-50;
+    border: 1px solid $color-grey-200;
+    border-radius: $border-radius-lg;
+    padding: 18px 14px;
+    font-family: $font-secondary;
+    font-size: $text-xs;
+    color: $color-black;
+    outline: none;
+    resize: none;
+    transition: border-color 0.15s;
+
+    &:focus { border-color: $color-primary; }
+    &::placeholder { color: $color-grey-400; }
+  }
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btnCancel {
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-md;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: $color-grey-50; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.btnSubmit {
+  padding: 6px 14px;
+  background: $color-grey-800;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-white;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover:not(:disabled) { opacity: 0.85; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: 2px;
+  }
+}

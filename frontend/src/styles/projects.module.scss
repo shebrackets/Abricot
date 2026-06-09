@@ -33,11 +33,19 @@
   border-radius: $border-radius-lg;
   font-family: $font-secondary;
   font-size: $text-base;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   white-space: nowrap;
   transition: opacity 0.15s;
 
   &:hover { opacity: 0.85; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .grid {

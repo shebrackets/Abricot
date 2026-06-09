@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { API_URL } from '@/services/api'
+import { API_URL, getToken } from '@/services/api'
 
 export default function useAuth() {
   const [user, setUser] = useState(null)
@@ -8,7 +8,7 @@ export default function useAuth() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = getToken()
     if (!token) {
       router.push('/login')
       return
@@ -34,14 +34,12 @@ export default function useAuth() {
     }
 
     fetchProfile()
-  }, [router])
+  }, [])
 
   const logout = () => {
     localStorage.removeItem('token')
     router.push('/login')
   }
-
-  const getToken = () => localStorage.getItem('token')
 
   return { user, loading, logout, getToken }
 }

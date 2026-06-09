@@ -9,25 +9,38 @@ const COLUMNS = [
 
 export default function TaskKanbanView({ tasks }) {
   return (
-    <div className={styles.board}>
+    <section className={styles.board} aria-label="Vue Kanban">
       {COLUMNS.map((col) => {
         const colTasks = tasks.filter((t) => t.status === col.key)
         return (
-          <div key={col.key} className={styles.column}>
-            <div className={styles.columnHeader}>
-              <span className={styles.columnTitle}>{col.label}</span>
-              <span className={styles.columnCount}>{colTasks.length}</span>
-            </div>
-            <div className={styles.columnTasks}>
-              {colTasks.length === 0 ? (
-                <p className={styles.empty}>Aucune tâche</p>
-              ) : (
-                colTasks.map((task) => <TaskCard key={task.id} task={task} variant="kanban" />)
-              )}
-            </div>
-          </div>
+          <section
+            key={col.key}
+            className={styles.column}
+            aria-label={col.label}
+          >
+            <header className={styles.columnHeader}>
+              <h2 className={styles.columnTitle}>{col.label}</h2>
+              <span
+                className={styles.columnCount}
+                aria-label={`${colTasks.length} tâche${colTasks.length > 1 ? 's' : ''}`}
+              >
+                {colTasks.length}
+              </span>
+            </header>
+            {colTasks.length === 0 ? (
+              <p className={styles.empty}>Aucune tâche</p>
+            ) : (
+              <ul className={styles.columnTasks} role="list">
+                {colTasks.map((task) => (
+                  <li key={task.id}>
+                    <TaskCard task={task} variant="kanban" />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         )
       })}
-    </div>
+    </section>
   )
 }

@@ -9,30 +9,37 @@ export default function TaskListView({ tasks, search, onSearch }) {
   )
 
   return (
-    <div className={styles.panel}>
+    <section className={styles.panel} aria-label="Mes tâches assignées">
       <div className={styles.panelHeader}>
         <div>
-          <p className={styles.panelTitle}>Mes tâches assignées</p>
+          <h2 className={styles.panelTitle}>Mes tâches assignées</h2>
           <p className={styles.panelSubtitle}>Par ordre de priorité</p>
         </div>
-        <div className={styles.search}>
+        <div className={styles.search} role="search">
+          <label htmlFor="task-search" className="sr-only">Rechercher une tâche</label>
           <input
-            type="text"
+            id="task-search"
+            type="search"
             placeholder="Rechercher une tâche"
             value={search}
             onChange={(e) => onSearch(e.target.value)}
+            aria-label="Rechercher une tâche"
           />
-          <Image src={iconSearch} alt="" width={14} height={14} />
+          <Image src={iconSearch} alt="" width={14} height={14} aria-hidden="true" />
         </div>
       </div>
 
-      <div className={styles.taskList}>
-        {filteredTasks.length === 0 ? (
-          <p className={styles.empty}>Aucune tâche assignée</p>
-        ) : (
-          filteredTasks.map((task) => <TaskCard key={task.id} task={task} variant="list" />)
-        )}
-      </div>
-    </div>
+      {filteredTasks.length === 0 ? (
+        <p className={styles.empty}>Aucune tâche assignée</p>
+      ) : (
+        <ul className={styles.taskList} role="list">
+          {filteredTasks.map((task) => (
+            <li key={task.id}>
+              <TaskCard task={task} variant="list" />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   )
 }

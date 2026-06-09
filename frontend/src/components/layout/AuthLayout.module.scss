@@ -4,6 +4,12 @@
   position: relative;
 }
 
+.bgWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .left {
   position: relative;
   z-index: 1;
@@ -30,4 +36,9 @@
   gap: 30px;
   align-items: center;
   width: 100%;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
 }

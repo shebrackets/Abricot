@@ -81,6 +81,10 @@
   font-family: $font-secondary;
   font-size: $text-base;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity 0.15s;
 
   &:hover { opacity: 0.85; }

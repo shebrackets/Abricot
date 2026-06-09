@@ -3,21 +3,24 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import logo from '@/assets/logo.svg'
 import { iconDashboard, iconDashboardOrange, iconProjects, iconProjectsWhite } from '@/assets/icons'
+import { getInitials } from '@/utils/helpers'
 import styles from './Navbar.module.scss'
 
 export default function Navbar({ user }) {
   const router = useRouter()
-  const initials = user?.name
-    ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase()
-    : 'U'
+  const initials = getInitials(user?.name) || 'U'
 
   return (
-    <nav className={styles.navbar}>
-      <Image src={logo} alt="Abricot" width={147} height={19} className={styles.logo} />
-      <div className={styles.nav}>
+    <header className={styles.navbar}>
+      <Link href="/dashboard">
+        <Image src={logo} alt="Abricot - Accueil" width={147} height={19} className={styles.logo} />
+      </Link>
+
+      <nav className={styles.nav} aria-label="Navigation principale">
         <Link
           href="/dashboard"
           className={`${styles.navItem} ${router.pathname === '/dashboard' ? styles.active : ''}`}
+          aria-current={router.pathname === '/dashboard' ? 'page' : undefined}
         >
           <Image
             src={router.pathname === '/dashboard' ? iconDashboard : iconDashboardOrange}
@@ -30,6 +33,7 @@ export default function Navbar({ user }) {
         <Link
           href="/projects"
           className={`${styles.navItem} ${router.pathname.startsWith('/projects') ? styles.active : ''}`}
+          aria-current={router.pathname.startsWith('/projects') ? 'page' : undefined}
         >
           <Image
             src={router.pathname.startsWith('/projects') ? iconProjectsWhite : iconProjects}
@@ -39,8 +43,11 @@ export default function Navbar({ user }) {
           />
           Projets
         </Link>
-      </div>
-      <div className={styles.userIcon}>{initials}</div>
-    </nav>
+      </nav>
+
+      <Link href="/account" className={styles.userIcon} aria-label={`Mon compte - ${user?.name}`}>
+        {initials}
+      </Link>
+    </header>
   )
 }

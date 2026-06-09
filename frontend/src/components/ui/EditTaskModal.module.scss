@@ -1,0 +1,307 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  padding: 79px 73px;
+  width: 598px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 37px;
+  right: 37px;
+  background: none;
+  border: none;
+  font-size: $text-base;
+  color: $color-grey-400;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+
+  &:hover {
+    color: $color-grey-800;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $text-2xl;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
+  margin: 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  label {
+    font-family: $font-secondary;
+    font-size: $text-sm;
+    font-weight: $font-regular;
+    color: $color-black;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    height: 53px;
+    padding: 0 17px;
+    background: $color-white;
+    border: 1px solid $color-grey-200;
+    border-radius: $border-radius-sm;
+    font-family: $font-secondary;
+    font-size: $text-xs;
+    color: $color-grey-600;
+    outline: none;
+    transition: border-color 0.15s;
+    resize: none;
+
+    &::placeholder {
+      color: $color-grey-400;
+    }
+
+    &:focus {
+      border-color: $color-primary;
+    }
+  }
+
+  textarea {
+    height: auto;
+    padding: 14px 17px;
+  }
+}
+
+.dateField {
+  width: 100%;
+  height: 53px;
+  padding: 0 17px;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &:focus-within {
+    border-color: $color-primary;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    font-family: $font-secondary;
+    font-size: $text-xs;
+    color: $color-grey-600;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+
+    &::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+  }
+}
+
+.assigneesWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.assigneesField {
+  width: 100%;
+  height: 53px;
+  padding: 0 17px;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: $font-secondary;
+}
+
+.assigneesText {
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-600;
+}
+
+.assigneesDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-md;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.assigneeOption {
+  width: 100%;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-800;
+
+  &:hover {
+    background: $color-grey-50;
+  }
+}
+
+.assigneeSelected {
+  background: $color-primary-light;
+  color: $color-primary;
+}
+
+.assigneeAvatar {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: $color-grey-200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $text-xs;
+  color: $color-grey-950;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.checkmark {
+  margin-left: auto;
+  color: $color-primary;
+  font-weight: $font-bold;
+}
+
+.statusField {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+
+  legend {
+    font-family: $font-secondary;
+    font-size: $text-sm;
+    font-weight: $font-regular;
+    color: $color-black;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+}
+
+.statusOptions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusTag {
+  padding: 4px 16px;
+  border-radius: $border-radius-xl;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.statusSelected {
+  opacity: 1;
+  border-color: currentColor;
+}
+
+.todo {
+  background: $color-danger-light;
+  color: $color-danger;
+}
+
+.inProgress {
+  background: $color-warning-light;
+  color: $color-warning;
+}
+
+.done {
+  background: $color-success-light;
+  color: $color-success;
+}
+
+.error {
+  padding: 8px 12px;
+  background: $color-danger-bg;
+  border: 1px solid $color-danger-border;
+  border-radius: $border-radius-sm;
+  font-size: $text-sm;
+  color: $color-danger;
+}
+
+.btnSave {
+  width: 244px;
+  height: 50px;
+  background: $color-grey-200;
+  color: $color-grey-400;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  cursor: not-allowed;
+  transition: all 0.15s;
+}
+
+.btnSaveActive {
+  background: $color-grey-800;
+  color: $color-white;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}

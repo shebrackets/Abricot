@@ -52,6 +52,11 @@
   &.done { background: $color-success-light; color: $color-success; }
 }
 
+.moreWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .moreBtn {
   background: $color-white;
   border: 1px solid $color-grey-200;
@@ -66,6 +71,11 @@
   transition: background 0.15s;
 
   &:hover { background: $color-grey-50; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .metaRow {
@@ -93,6 +103,7 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  padding: 0;
 }
 
 .assigneeItem {
@@ -127,9 +138,9 @@
 }
 
 .divider {
-  width: 100%;
-  height: 1px;
-  background: $color-grey-200;
+  border: none;
+  border-top: 1px solid $color-grey-200;
+  margin: 0;
 }
 
 .comments {
@@ -141,6 +152,12 @@
   border: none;
   width: 100%;
   padding: 0;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+    border-radius: $border-radius-sm;
+  }
 }
 
 .commentsLabel {
@@ -154,23 +171,74 @@
   &.open { transform: rotate(180deg); }
 }
 
-.commentsList {
+.moreDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  z-index: 10;
+  width: 280px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-.comment {
+.moreDropdownTitle {
+  font-family: $font-primary;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  color: $color-black;
+}
+
+.moreDropdownDesc {
   font-family: $font-secondary;
   font-size: $text-sm;
   color: $color-grey-600;
-  padding: 12px;
-  background: $color-grey-50;
-  border-radius: $border-radius-md;
 }
 
-.commentAuthor {
-  font-weight: $font-semibold;
-  color: $color-grey-800;
-  margin-bottom: 4px;
+.moreDropdownDivider {
+  border: none;
+  border-top: 1px solid $color-grey-200;
+  margin: 0;
+}
+
+.moreDropdownSeparator {
+  color: $color-grey-200;
+  font-size: $text-base;
+}
+
+.moreDropdownActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.moreOption {
+  background: none;
+  border: none;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover { color: $color-grey-800; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+    border-radius: $border-radius-sm;
+  }
+}
+
+.moreOptionDanger {
+  color: $color-danger;
+  &:hover { opacity: 0.8; }
 }

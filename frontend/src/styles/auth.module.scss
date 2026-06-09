@@ -39,9 +39,12 @@
     color: $color-grey-800;
     transition: border-color 0.15s;
 
+    &::placeholder { color: $color-grey-400; }
+
     &:focus {
       outline: none;
       border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(211, 89, 11, 0.1);
     }
   }
 }

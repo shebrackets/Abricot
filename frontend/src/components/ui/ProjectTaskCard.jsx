@@ -1,14 +1,10 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { iconMore, iconCalendar, iconChevronDown } from '@/assets/icons'
+import { iconMore, iconCalendar, iconChevronDown, iconTrash, iconEdit } from '@/assets/icons'
+import CommentSection from './CommentSection'
+import useClickOutside from '@/hooks/useClickOutside'
+import { getInitials, formatDate, STATUS_LABELS } from '@/utils/helpers'
 import styles from './ProjectTaskCard.module.scss'
-
-const STATUS_LABELS = {
-  TODO: 'À faire',
-  IN_PROGRESS: 'En cours',
-  DONE: 'Terminée',
-  CANCELLED: 'Annulée',
-}
 
 const STATUS_CLASSES = {
   TODO: styles.todo,
@@ -17,39 +13,77 @@ const STATUS_CLASSES = {
   CANCELLED: styles.todo,
 }
 
-export default function ProjectTaskCard({ task, onEdit }) {
+export default function ProjectTaskCard({ task, onEdit, onDelete, user }) {
   const [commentsOpen, setCommentsOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
 
-  const getInitials = (name) =>
-    name?.split(' ').map((n) => n[0]).join('').toUpperCase() || '?'
+  useClickOutside(menuRef, () => setMenuOpen(false))
 
-  const dueDate = task.dueDate
-    ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
-    : null
+  const dueDate = formatDate(task.dueDate)
+  const statusLabel = STATUS_LABELS[task.status] || 'À faire'
+  const statusClass = STATUS_CLASSES[task.status] || styles.todo
+
+  const handleCommentAdded = (newComment) => {
+    task.comments = [...(task.comments || []), newComment]
+  }
 
   return (
-    <div className={styles.card}>
+    <article className={styles.card}>
       <div className={styles.top}>
         <div className={styles.topLeft}>
           <div className={styles.titleRow}>
-            <p className={styles.title}>{task.title}</p>
-            <span className={`${styles.tag} ${STATUS_CLASSES[task.status] || styles.todo}`}>
-              {STATUS_LABELS[task.status] || 'À faire'}
-            </span>
+            <h3 className={styles.title}>{task.title}</h3>
+            <span className={`${styles.tag} ${statusClass}`}>{statusLabel}</span>
           </div>
           <p className={styles.description}>{task.description}</p>
         </div>
-        <button className={styles.moreBtn} onClick={() => onEdit?.(task)}>
-          <Image src={iconMore} alt="Plus" width={15} height={4} />
-        </button>
+
+        <div className={styles.moreWrapper} ref={menuRef}>
+          <button
+            className={styles.moreBtn}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Options de la tâche"
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+          >
+            <Image src={iconMore} alt="" width={15} height={4} aria-hidden="true" />
+          </button>
+          {menuOpen && (
+            <div className={styles.moreDropdown} role="menu">
+              <p className={styles.moreDropdownTitle}>{task.title}</p>
+              <p className={styles.moreDropdownDesc}>{task.description}</p>
+              <div className={styles.moreDropdownDivider} aria-hidden="true" />
+              <div className={styles.moreDropdownActions}>
+                <button
+                  className={`${styles.moreOption} ${styles.moreOptionDanger}`}
+                  onClick={() => { setMenuOpen(false); onDelete?.(task) }}
+                  role="menuitem"
+                >
+                  <Image src={iconTrash} alt="" width={14} height={16} aria-hidden="true" />
+                  Supprimer
+                </button>
+                <span className={styles.moreDropdownSeparator} aria-hidden="true">|</span>
+                <button
+                  className={styles.moreOption}
+                  onClick={() => { setMenuOpen(false); onEdit?.(task) }}
+                  role="menuitem"
+                >
+                  <Image src={iconEdit} alt="" width={14} height={14} aria-hidden="true" />
+                  Modifier
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {dueDate && (
         <div className={styles.metaRow}>
           <span className={styles.metaLabel}>Échéance :</span>
           <span className={styles.metaDate}>
-            <Image src={iconCalendar} alt="" width={15} height={17} />
-            {dueDate}
+            <Image src={iconCalendar} alt="" width={15} height={17} aria-hidden="true" />
+            <time dateTime={task.dueDate}>{dueDate}</time>
           </span>
         </div>
       )}
@@ -57,25 +91,28 @@ export default function ProjectTaskCard({ task, onEdit }) {
       {task.assignees?.length > 0 && (
         <div className={styles.metaRow}>
           <span className={styles.metaLabel}>Assigné à :</span>
-          <div className={styles.assignees}>
+          <ul className={styles.assignees} role="list">
             {task.assignees.map((a, index) => (
-              <div key={a.userId || a.id || index} className={styles.assigneeItem}>
-                <div className={styles.avatar}>{getInitials(a.user?.name)}</div>
+              <li key={a.userId || a.id || index} className={styles.assigneeItem}>
+                <div className={styles.avatar} aria-hidden="true">
+                  {getInitials(a.user?.name)}
+                </div>
                 <span className={styles.assigneeName}>{a.user?.name}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
 
-      <div className={styles.divider} />
+      <hr className={styles.divider} aria-hidden="true" />
 
       <button
         className={styles.comments}
         onClick={() => setCommentsOpen(!commentsOpen)}
+        aria-expanded={commentsOpen}
       >
         <span className={styles.commentsLabel}>
-          Commentaires ({task.comments?.length || task._count?.comments || 0})
+          Commentaires ({task.comments?.length || 0})
         </span>
         <Image
           src={iconChevronDown}
@@ -83,19 +120,18 @@ export default function ProjectTaskCard({ task, onEdit }) {
           width={16}
           height={8}
           className={`${styles.chevron} ${commentsOpen ? styles.open : ''}`}
+          aria-hidden="true"
         />
       </button>
 
-      {commentsOpen && task.comments?.length > 0 && (
-        <div className={styles.commentsList}>
-          {task.comments.map((c, index) => (
-            <div key={c.id || index} className={styles.comment}>
-              <p className={styles.commentAuthor}>{c.author?.name}</p>
-              <p>{c.content}</p>
-            </div>
-          ))}
-        </div>
+      {commentsOpen && (
+        <CommentSection
+          task={task}
+          user={user}
+          projectId={task.projectId}
+          onUpdate={handleCommentAdded}
+        />
       )}
-    </div>
+    </article>
   )
 }
