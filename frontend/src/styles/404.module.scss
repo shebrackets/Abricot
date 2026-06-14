@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - $navbar-height - $footer-height);
+  gap: 16px;
+  text-align: center;
+}
+
+.code {
+  font-family: $font-primary;
+  font-size: 120px;
+  font-weight: $font-bold;
+  color: $color-primary;
+  line-height: 1;
+  margin: 0;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $text-2xl;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-grey-600;
+  margin: 0;
+}
+
+.btn {
+  margin-top: 16px;
+  height: 50px;
+  padding: 0 24px;
+  background: $color-grey-800;
+  color: $color-white;
+  border-radius: $border-radius-lg;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.85; }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}

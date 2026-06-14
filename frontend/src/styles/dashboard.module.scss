@@ -40,7 +40,9 @@
   transition: opacity 0.15s;
   white-space: nowrap;
 
-  &:hover { opacity: 0.85; }
+  &:hover {
+    opacity: 0.85;
+  }
 
   &:focus-visible {
     outline: 2px solid $color-primary;
@@ -58,6 +60,7 @@
 .tabs {
   display: flex;
   gap: 10px;
+  margin-bottom: 30px;
 }
 
 .statusFilterWrapper {
@@ -112,7 +115,9 @@
   cursor: pointer;
   transition: background 0.15s;
 
-  &:hover { background: $color-grey-50; }
+  &:hover {
+    background: $color-grey-50;
+  }
 
   &:focus-visible {
     outline: 2px solid $color-primary;
@@ -128,7 +133,10 @@
 
 .chevron {
   transition: transform 0.2s;
-  &.open { transform: rotate(180deg); }
+
+  &.open {
+    transform: rotate(180deg);
+  }
 }
 
 .tab {
@@ -150,7 +158,9 @@
     color: $color-primary;
   }
 
-  &:hover:not(.active) { background: $color-grey-50; }
+  &:hover:not(.active) {
+    background: $color-grey-50;
+  }
 
   &:focus-visible {
     outline: 2px solid $color-primary;

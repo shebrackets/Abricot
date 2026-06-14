@@ -773,3 +773,25 @@ export const searchUsers = async (
     sendServerError(res, "Erreur lors de la recherche d'utilisateurs");
   }
 };
+
+export const getUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const authReq = req as AuthRequest;
+    if (!authReq.user) {
+      sendError(res, "Utilisateur non authentifié", "UNAUTHORIZED", 401);
+      return;
+    }
+    const users = await prisma.user.findMany({
+      where: { id: { not: authReq.user.id } },
+      select: { id: true, name: true, email: true },
+      orderBy: { name: "asc" },
+    });
+    sendSuccess(res, "Utilisateurs récupérés", { users });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des utilisateurs:", error);
+    sendServerError(res, "Erreur lors de la récupération des utilisateurs");
+  }
+};

@@ -30,9 +30,7 @@
   cursor: pointer;
   line-height: 1;
 
-  &:hover {
-    color: $color-grey-800;
-  }
+  &:hover { color: $color-grey-800; }
 
   &:focus-visible {
     outline: 2px solid $color-primary;
@@ -85,13 +83,8 @@
     outline: none;
     transition: border-color 0.15s;
 
-    &::placeholder {
-      color: $color-grey-400;
-    }
-
-    &:focus {
-      border-color: $color-primary;
-    }
+    &::placeholder { color: $color-grey-400; }
+    &:focus { border-color: $color-primary; }
   }
 }
 
@@ -135,27 +128,31 @@
   border-radius: $border-radius-md;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   z-index: 10;
+  overflow: hidden;
   padding: 0;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
-.contributorItem {
+.contributorOption {
+  width: 100%;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
   font-family: $font-secondary;
   font-size: $text-sm;
   color: $color-grey-800;
-}
 
-.contributorClickable {
-  cursor: pointer;
-  transition: background 0.15s;
+  &:hover { background: $color-grey-50; }
 
-  &:hover {
-    background: $color-grey-50;
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
   }
 }
 
@@ -178,17 +175,25 @@
   flex-shrink: 0;
 }
 
-.contributorName {
-  flex: 1;
+.checkmark {
+  margin-left: auto;
+  color: $color-primary;
+  font-weight: $font-bold;
 }
 
-.ownerBadge {
-  background: $color-primary-light;
-  color: $color-primary;
+.emptyUsers {
+  padding: 12px 16px;
   font-family: $font-secondary;
   font-size: $text-xs;
-  padding: 2px 10px;
-  border-radius: $border-radius-xl;
+  color: $color-grey-400;
+  text-align: center;
+}
+
+.emptyUsers {
+  font-family: $font-secondary;
+  font-size: $text-xs;
+  color: $color-grey-400;
+  text-align: center;
 }
 
 .error {
@@ -218,37 +223,10 @@
   color: $color-white;
   cursor: pointer;
 
-  &:hover {
-    opacity: 0.85;
-  }
+  &:hover { opacity: 0.85; }
 
   &:focus-visible {
     outline: 2px solid $color-white;
-    outline-offset: 2px;
-  }
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btnDelete {
-  background: none;
-  border: none;
-  font-family: $font-secondary;
-  font-size: $text-sm;
-  color: $color-danger;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  &:focus-visible {
-    outline: 2px solid $color-danger;
     outline-offset: 2px;
   }
 }

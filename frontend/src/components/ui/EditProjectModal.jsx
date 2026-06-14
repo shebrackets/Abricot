@@ -6,9 +6,13 @@ import { getInitials } from '@/utils/helpers'
 import { API_URL, getToken } from '@/services/api'
 import styles from './EditProjectModal.module.scss'
 
-export default function EditProjectModal({ project, onClose, onSave }) {
+export default function EditProjectModal({ project, onClose, onSave, onDelete }) {
   const [name, setName] = useState(project.name || '')
   const [description, setDescription] = useState(project.description || '')
+  const [allUsers, setAllUsers] = useState([])
+  const [selectedMembers, setSelectedMembers] = useState(
+    project.members?.map((m) => m.userId) || []
+  )
   const [contributorsOpen, setContributorsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -22,17 +26,37 @@ export default function EditProjectModal({ project, onClose, onSave }) {
     return () => document.removeEventListener('keydown', handleKey)
   }, [onClose])
 
-  const allMembers = [
-    ...(project.owner ? [{ userId: project.owner.id, user: project.owner, role: 'OWNER' }] : []),
-    ...(project.members || []),
-  ]
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/users`, {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        if (res.ok) {
+          const data = await res.json()
+          setAllUsers(data.data.users || [])
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchUsers()
+  }, [])
+
+  const toggleMember = (userId) => {
+    if (userId === project.owner?.id) return
+    setSelectedMembers((prev) =>
+      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
+
     try {
-      const res = await fetch(`${API_URL}/api/projects/${project.id}`, {
+      const profileRes = await fetch(`${API_URL}/api/projects/${project.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -40,21 +64,62 @@ export default function EditProjectModal({ project, onClose, onSave }) {
         },
         body: JSON.stringify({ name, description }),
       })
-      const data = await res.json()
-      console.log('response status:', res.status, 'data:', data)
-      if (res.ok) {
-        onSave(data.data.project)
-        onClose()
-      } else {
-        setError(data.message || 'Erreur lors de la modification')
+      const profileData = await profileRes.json()
+      if (!profileRes.ok) {
+        setError(profileData.message || 'Erreur lors de la modification')
+        return
       }
-    } catch (err) {
-      console.error('catch error:', err)
+
+      const currentMemberIds = project.members?.map((m) => m.userId) || []
+      const toAdd = selectedMembers.filter((id) => !currentMemberIds.includes(id))
+      const toRemove = currentMemberIds.filter((id) => !selectedMembers.includes(id))
+
+      for (const userId of toAdd) {
+        const user = allUsers.find((u) => u.id === userId)
+        if (user) {
+          await fetch(`${API_URL}/api/projects/${project.id}/contributors`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({ email: user.email }),
+          })
+        }
+      }
+
+      for (const userId of toRemove) {
+        await fetch(`${API_URL}/api/projects/${project.id}/contributors/${userId}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${getToken()}` },
+        })
+      }
+
+      onSave(profileData.data.project)
+      onClose()
+    } catch {
       setError('Erreur de connexion au serveur')
     } finally {
       setLoading(false)
     }
   }
+
+  const handleDelete = async () => {
+    if (!confirm(`Supprimer définitivement "${project.name}" ?`)) return
+    try {
+      const res = await fetch(`${API_URL}/api/projects/${project.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      if (res.ok) {
+        window.location.href = '/projects'
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const membersCount = selectedMembers.length + 1
 
   return (
     <div
@@ -106,39 +171,62 @@ export default function EditProjectModal({ project, onClose, onSave }) {
                   onClick={() => setContributorsOpen(!contributorsOpen)}
                   aria-expanded={contributorsOpen}
                   aria-haspopup="listbox"
-                  aria-labelledby="contributors-label"
                 >
                   <span className={styles.contributorsText}>
-                    {allMembers.length} collaborateur{allMembers.length > 1 ? 's' : ''}
+                    {membersCount} collaborateur{membersCount > 1 ? 's' : ''}
                   </span>
                   <Image src={iconChevronDown} alt="" width={16} height={8} aria-hidden="true" />
                 </button>
                 {contributorsOpen && (
                   <ul className={styles.contributorsDropdown} role="listbox">
-                    {allMembers.map((m) => (
-                      <li key={m.userId} className={styles.contributorOption} role="option">
-                        <div className={styles.contributorAvatar} aria-hidden="true">
-                          {getInitials(m.user?.name)}
+                    {project.owner && (
+                      <li className={styles.contributorItem}>
+                        <div className={styles.contributorAvatar}>
+                          {getInitials(project.owner.name)}
                         </div>
-                        <span>{m.user?.name}</span>
-                        {m.role === 'OWNER' && (
-                          <span className={styles.ownerBadge}>Propriétaire</span>
-                        )}
+                        <span className={styles.contributorName}>{project.owner.name}</span>
+                        <span className={styles.ownerBadge}>Propriétaire</span>
                       </li>
-                    ))}
+                    )}
+                    {allUsers.map((u) => {
+                      const isSelected = selectedMembers.includes(u.id)
+                      return (
+                        <li
+                          key={u.id}
+                          className={`${styles.contributorItem} ${styles.contributorClickable} ${isSelected ? styles.contributorSelected : ''}`}
+                          role="option"
+                          aria-selected={isSelected}
+                          onClick={() => toggleMember(u.id)}
+                        >
+                          <div className={styles.contributorAvatar}>
+                            {getInitials(u.name)}
+                          </div>
+                          <span className={styles.contributorName}>{u.name}</span>
+                        </li>
+                      )
+                    })}
                   </ul>
                 )}
               </div>
             </div>
           </div>
 
-          <button
-            type="submit"
-            className={`${styles.btnSave} ${!loading ? styles.btnSaveActive : ''}`}
-            disabled={loading}
-          >
-            {loading ? 'Enregistrement...' : 'Enregistrer'}
-          </button>
+          <div className={styles.actions}>
+            <button
+              type="submit"
+              className={`${styles.btnSave} ${!loading ? styles.btnSaveActive : ''}`}
+              disabled={loading}
+            >
+              {loading ? 'Enregistrement...' : 'Enregistrer'}
+            </button>
+            <button
+              type="button"
+              className={styles.btnDelete}
+              onClick={handleDelete}
+            >
+              Supprimer le projet
+            </button>
+          </div>
         </form>
       </div>
     </div>

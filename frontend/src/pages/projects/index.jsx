@@ -1,13 +1,21 @@
-import Link from 'next/link'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import DashboardLayout from '@/components/layout/DashboardLayout'
 import ProjectCard from '@/components/ui/ProjectCard'
+import CreateProjectModal from '@/components/ui/CreateProjectModal'
 import useAuth from '@/hooks/useAuth'
 import useProjects from '@/hooks/useProjects'
 import styles from '@/styles/projects.module.scss'
 
 export default function ProjectsPage() {
   const { user, loading } = useAuth()
-  const { projects, loading: loadingProjects } = useProjects(user)
+  const router = useRouter()
+  const { projects, setProjects, loading: loadingProjects } = useProjects(user)
+  const [creatingProject, setCreatingProject] = useState(false)
+
+  const handleProjectCreated = (newProject) => {
+    router.push(`/projects/${newProject.id}`)
+  }
 
   if (loading) return <div style={{ padding: '2rem' }}>Chargement...</div>
 
@@ -18,9 +26,12 @@ export default function ProjectsPage() {
           <h1 className={styles.title}>Mes projets</h1>
           <p className={styles.subtitle}>Gérez vos projets</p>
         </div>
-        <Link href="/projects/new" className={styles.btnCreate}>
+        <button
+          className={styles.btnCreate}
+          onClick={() => setCreatingProject(true)}
+        >
           + Créer un projet
-        </Link>
+        </button>
       </header>
 
       <section aria-label="Liste des projets">
@@ -36,6 +47,13 @@ export default function ProjectsPage() {
           )}
         </div>
       </section>
+
+      {creatingProject && (
+        <CreateProjectModal
+          onClose={() => setCreatingProject(false)}
+          onSave={handleProjectCreated}
+        />
+      )}
     </DashboardLayout>
   )
 }

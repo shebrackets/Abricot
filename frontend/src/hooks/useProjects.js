@@ -7,6 +7,7 @@ export default function useProjects(user) {
 
   useEffect(() => {
     if (!user) return
+    setLoading(true)
 
     const fetchProjects = async () => {
       try {
@@ -27,5 +28,5 @@ export default function useProjects(user) {
     fetchProjects()
   }, [user])
 
-  return { projects, loading }
+  return { projects, setProjects, loading }
 }

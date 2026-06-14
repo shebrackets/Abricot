@@ -5,6 +5,7 @@ export default function useProject(id) {
   const [project, setProject] = useState(null)
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -21,16 +22,22 @@ export default function useProject(id) {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ])
-        if (projectRes.ok) {
-          const data = await projectRes.json()
-          setProject(data.data.project)
+
+        if (!projectRes.ok) {
+          setNotFound(true)
+          return
         }
+
+        const data = await projectRes.json()
+        setProject(data.data.project)
+
         if (tasksRes.ok) {
-          const data = await tasksRes.json()
-          setTasks(data.data.tasks || [])
+          const tasksData = await tasksRes.json()
+          setTasks(tasksData.data.tasks || [])
         }
       } catch (err) {
         console.error(err)
+        setNotFound(true)
       } finally {
         setLoading(false)
       }
@@ -39,5 +46,5 @@ export default function useProject(id) {
     fetchProject()
   }, [id])
 
-  return { project, setProject, tasks, setTasks, loading }
+  return { project, setProject, tasks, setTasks, loading, notFound }
 }

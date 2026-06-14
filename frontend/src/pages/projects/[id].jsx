@@ -25,7 +25,7 @@ export default function ProjectPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
   const { id } = router.query
-  const { project, tasks, setTasks, loading: loadingProject, setProject } = useProject(id)
+  const { project, tasks, setTasks, loading: loadingProject, setProject, notFound } = useProject(id)
 
   const [search, setSearch] = useState('')
   const [view, setView] = useState('list')
@@ -38,6 +38,11 @@ export default function ProjectPage() {
 
   const statusRef = useRef(null)
   useClickOutside(statusRef, () => setStatusOpen(false))
+
+  if (notFound) {
+    router.replace('/404')
+    return null
+  }
 
   const filteredTasks = tasks
     .filter((t) => statusFilter === 'ALL' || t.status === statusFilter)
@@ -74,8 +79,19 @@ export default function ProjectPage() {
     }
   }
 
-  const handleSaveProject = (updatedProject) => {
-    setProject((prev) => ({ ...prev, ...updatedProject }))
+  const handleSaveProject = async (updatedProject) => {
+    const token = getToken()
+    try {
+      const res = await fetch(`${API_URL}/api/projects/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setProject(data.data.project)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const handleTaskCreated = (newTask) => {
@@ -144,7 +160,7 @@ export default function ProjectPage() {
           <div className={styles.headerInfo}>
             <div className={styles.titleRow}>
               <h1 className={styles.projectName}>{project?.name}</h1>
-              {(project?.userRole === 'ADMIN' || project?.owner?.id === user?.id) && (
+              {project?.owner?.id === user?.id && (
                 <button
                   className={styles.editLink}
                   onClick={() => setEditingProject(true)}
