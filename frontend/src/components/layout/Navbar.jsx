@@ -1,14 +1,26 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { useRef, useState } from 'react'
 import logo from '@/assets/logo.svg'
 import { iconDashboard, iconDashboardOrange, iconProjects, iconProjectsWhite } from '@/assets/icons'
 import { getInitials } from '@/utils/helpers'
+import { removeToken } from '@/services/api'
+import useClickOutside from '@/hooks/useClickOutside'
 import styles from './Navbar.module.scss'
 
 export default function Navbar({ user }) {
   const router = useRouter()
   const initials = getInitials(user?.name) || 'U'
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+
+  useClickOutside(menuRef, () => setMenuOpen(false))
+
+  const handleLogout = () => {
+    removeToken()
+    router.push('/login')
+  }
 
   return (
     <header className={styles.navbar}>
@@ -45,9 +57,37 @@ export default function Navbar({ user }) {
         </Link>
       </nav>
 
-      <Link href="/account" className={styles.userIcon} aria-label={`Mon compte - ${user?.name}`}>
-        {initials}
-      </Link>
+      <div className={styles.userMenu} ref={menuRef}>
+        <button
+          className={styles.userIcon}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={`Menu compte - ${user?.name}`}
+          aria-expanded={menuOpen}
+          aria-haspopup="true"
+        >
+          {initials}
+        </button>
+
+        {menuOpen && (
+          <div className={styles.dropdown} role="menu">
+            <Link
+              href="/account"
+              className={styles.dropdownItem}
+              role="menuitem"
+              onClick={() => setMenuOpen(false)}
+            >
+              Mon compte
+            </Link>
+            <button
+              className={styles.dropdownItem}
+              role="menuitem"
+              onClick={handleLogout}
+            >
+              Se déconnecter
+            </button>
+          </div>
+        )}
+      </div>
     </header>
   )
 }

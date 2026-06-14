@@ -54,6 +54,10 @@
   }
 }
 
+.userMenu {
+  position: relative;
+}
+
 .userIcon {
   width: 65px;
   height: 65px;
@@ -67,7 +71,8 @@
   color: $color-grey-950;
   text-transform: uppercase;
   letter-spacing: 0.28px;
-  text-decoration: none;
+  border: none;
+  cursor: pointer;
   transition: opacity 0.15s;
 
   &:hover { opacity: 0.85; }
@@ -75,5 +80,45 @@
   &:focus-visible {
     outline: 2px solid $color-primary;
     outline-offset: 2px;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-grey-800;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $color-grey-50;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
+  }
+
+  & + & {
+    border-top: 1px solid $color-grey-100;
   }
 }

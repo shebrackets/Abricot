@@ -5,6 +5,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout'
 import ProjectTaskCard from '@/components/ui/ProjectTaskCard'
 import EditTaskModal from '@/components/ui/EditTaskModal'
 import EditProjectModal from '@/components/ui/EditProjectModal'
+import CreateTaskModal from '@/components/ui/CreateTaskModal'
 import useAuth from '@/hooks/useAuth'
 import useProject from '@/hooks/useProject'
 import useClickOutside from '@/hooks/useClickOutside'
@@ -32,6 +33,8 @@ export default function ProjectPage() {
   const [statusOpen, setStatusOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   const [editingProject, setEditingProject] = useState(false)
+  const [creatingTask, setCreatingTask] = useState(false)
+  const [aiLoading, setAiLoading] = useState(false)
 
   const statusRef = useRef(null)
   useClickOutside(statusRef, () => setStatusOpen(false))
@@ -75,6 +78,56 @@ export default function ProjectPage() {
     setProject((prev) => ({ ...prev, ...updatedProject }))
   }
 
+  const handleTaskCreated = (newTask) => {
+    setTasks((prev) => {
+      const exists = prev.some((t) => t.id === newTask.id)
+      if (exists) return prev
+      return [newTask, ...prev]
+    })
+  }
+
+  const handleAIGenerate = async () => {
+    if (aiLoading) return
+    setAiLoading(true)
+    try {
+      const res = await fetch('/api/ai/generate-tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectName: project?.name,
+          projectDescription: project?.description,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message)
+
+      await Promise.all(
+        data.tasks.map(async (task) => {
+          const taskRes = await fetch(`${API_URL}/api/projects/${id}/tasks`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({
+              title: task.title,
+              description: task.description,
+              status: 'TODO',
+              dueDate: null,
+              assigneeIds: [],
+            }),
+          })
+          const taskData = await taskRes.json()
+          if (taskRes.ok) handleTaskCreated(taskData.data.task)
+        })
+      )
+    } catch (err) {
+      console.error('Erreur génération IA:', err)
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
   if (loading || loadingProject) return <div style={{ padding: '2rem' }}>Chargement...</div>
 
   return (
@@ -104,10 +157,20 @@ export default function ProjectPage() {
           </div>
         </div>
         <div className={styles.headerActions}>
-          <button className={styles.btnCreate}>Créer une tâche</button>
-          <button className={styles.btnAI} aria-label="Générer des tâches avec l'IA">
+          <button
+            className={styles.btnCreate}
+            onClick={() => setCreatingTask(true)}
+          >
+            Créer une tâche
+          </button>
+          <button
+            className={styles.btnAI}
+            aria-label="Générer des tâches avec l'IA"
+            onClick={handleAIGenerate}
+            disabled={aiLoading}
+          >
             <Image src={iconStar} alt="" width={21} height={21} aria-hidden="true" />
-            IA
+            {aiLoading ? '...' : 'IA'}
           </button>
         </div>
       </header>
@@ -249,6 +312,18 @@ export default function ProjectPage() {
           project={project}
           onClose={() => setEditingProject(false)}
           onSave={handleSaveProject}
+        />
+      )}
+
+      {creatingTask && (
+        <CreateTaskModal
+          projectId={id}
+          projectMembers={[
+            ...(project?.owner ? [{ userId: project.owner.id, user: project.owner }] : []),
+            ...(project?.members || []),
+          ]}
+          onClose={() => setCreatingTask(false)}
+          onSave={handleTaskCreated}
         />
       )}
     </DashboardLayout>
