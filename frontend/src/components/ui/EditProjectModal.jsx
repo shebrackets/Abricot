@@ -120,6 +120,7 @@ export default function EditProjectModal({ project, onClose, onSave, onDelete })
   }
 
   const membersCount = selectedMembers.length + 1
+  const isValid = name.trim().length >= 2 && description.trim().length >= 2
 
   return (
     <div
@@ -159,6 +160,8 @@ export default function EditProjectModal({ project, onClose, onSave, onDelete })
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description du projet"
+                required
+                autoComplete="off"
               />
             </div>
 
@@ -214,8 +217,8 @@ export default function EditProjectModal({ project, onClose, onSave, onDelete })
           <div className={styles.actions}>
             <button
               type="submit"
-              className={`${styles.btnSave} ${!loading ? styles.btnSaveActive : ''}`}
-              disabled={loading}
+              className={`${styles.btnSave} ${isValid && !loading ? styles.btnSaveActive : ''}`}
+              disabled={!isValid || loading}
             >
               {loading ? 'Enregistrement...' : 'Enregistrer'}
             </button>

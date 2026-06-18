@@ -3,3 +3,9 @@
   padding: 0 100px;
   min-height: calc(100vh - $navbar-height - $footer-height);
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .main {
+    padding: 0 20px;
+  }
+}

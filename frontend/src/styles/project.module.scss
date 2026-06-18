@@ -389,3 +389,63 @@
   color: $color-grey-600;
   padding: 40px 0;
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin: 30px 0 16px;
+  }
+
+  .headerLeft {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+
+  .btnCreate {
+    flex: 1;
+  }
+
+  .contributors {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .panelHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .panelControls {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .statusFilterWrapper,
+  .statusFilter,
+  .search {
+    width: 100%;
+  }
+}

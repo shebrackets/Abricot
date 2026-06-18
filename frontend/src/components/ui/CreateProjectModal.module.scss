@@ -1,42 +1,4 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal {
-  background: $color-white;
-  border-radius: $border-radius-lg;
-  padding: 79px 73px;
-  width: 598px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 56px;
-}
-
-.closeBtn {
-  position: absolute;
-  top: 37px;
-  right: 37px;
-  background: none;
-  border: none;
-  font-size: $text-base;
-  color: $color-grey-400;
-  cursor: pointer;
-  line-height: 1;
-
-  &:hover { color: $color-grey-800; }
-
-  &:focus-visible {
-    outline: 2px solid $color-primary;
-    outline-offset: 2px;
-  }
-}
+@forward '../../styles/modal-shared';
 
 .form {
   display: flex;
@@ -83,8 +45,13 @@
     outline: none;
     transition: border-color 0.15s;
 
-    &::placeholder { color: $color-grey-400; }
-    &:focus { border-color: $color-primary; }
+    &::placeholder {
+      color: $color-grey-400;
+    }
+
+    &:focus {
+      border-color: $color-primary;
+    }
   }
 }
 
@@ -148,7 +115,9 @@
   font-size: $text-sm;
   color: $color-grey-800;
 
-  &:hover { background: $color-grey-50; }
+  &:hover {
+    background: $color-grey-50;
+  }
 
   &:focus-visible {
     outline: 2px solid $color-primary;
@@ -189,13 +158,6 @@
   text-align: center;
 }
 
-.emptyUsers {
-  font-family: $font-secondary;
-  font-size: $text-xs;
-  color: $color-grey-400;
-  text-align: center;
-}
-
 .error {
   padding: 8px 12px;
   background: $color-danger-bg;
@@ -223,7 +185,9 @@
   color: $color-white;
   cursor: pointer;
 
-  &:hover { opacity: 0.85; }
+  &:hover {
+    opacity: 0.85;
+  }
 
   &:focus-visible {
     outline: 2px solid $color-white;

@@ -17,3 +17,9 @@
   font-size: $text-base;
   color: $color-black;
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .footer {
+    padding: 0 20px;
+  }
+}

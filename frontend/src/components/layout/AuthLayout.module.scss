@@ -42,3 +42,17 @@
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .page {
+    flex-direction: column;
+  }
+  .bgWrapper {
+    display: none;
+  }
+  .left {
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+}

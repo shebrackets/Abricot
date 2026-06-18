@@ -122,3 +122,40 @@
     border-top: 1px solid $color-grey-100;
   }
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .navbar {
+    padding: 0 16px;
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .logo {
+    width: 90px;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .navItem {
+    padding: 10px 14px;
+    font-size: $text-xs;
+    gap: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .userIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 10px;
+  }
+}

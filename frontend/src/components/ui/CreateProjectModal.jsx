@@ -116,6 +116,7 @@ export default function CreateProjectModal({ onClose, onSave }) {
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                required
                                 autoComplete="off"
                             />
                         </div>

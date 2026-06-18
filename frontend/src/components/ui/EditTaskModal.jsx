@@ -26,6 +26,8 @@ export default function EditTaskModal({ task, projectId, projectMembers, onClose
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const isValid = title.trim().length >= 2 && description.trim().length >= 2 && dueDate.trim().length > 0
+
   const assigneesRef = useRef(null)
   useClickOutside(assigneesRef, () => setAssigneesOpen(false))
 
@@ -119,6 +121,7 @@ export default function EditTaskModal({ task, projectId, projectMembers, onClose
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description de la tâche"
                 rows={3}
+                required
               />
             </div>
 
@@ -203,8 +206,8 @@ export default function EditTaskModal({ task, projectId, projectMembers, onClose
 
           <button
             type="submit"
-            className={`${styles.btnSave} ${!loading ? styles.btnSaveActive : ''}`}
-            disabled={loading}
+            className={`${styles.btnSave} ${isValid && !loading ? styles.btnSaveActive : ''}`}
+            disabled={!isValid || loading}
           >
             {loading ? 'Enregistrement...' : 'Enregistrer'}
           </button>
