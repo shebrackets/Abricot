@@ -22,6 +22,8 @@ export default function CreateTaskModal({ projectId, projectMembers, onClose, on
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const isValid = title.trim().length >= 2 && description.trim().length >= 2 && dueDate.trim().length > 0
+
   const assigneesRef = useRef(null)
   useClickOutside(assigneesRef, () => setAssigneesOpen(false))
 
@@ -202,8 +204,8 @@ export default function CreateTaskModal({ projectId, projectMembers, onClose, on
 
           <button
             type="submit"
-            className={`${styles.btnSave} ${!loading ? styles.btnSaveActive : ''}`}
-            disabled={loading}
+            className={`${styles.btnSave} ${isValid && !loading ? styles.btnSaveActive : ''}`}
+            disabled={!isValid || loading}
           >
             {loading ? 'Création...' : 'Créer la tâche'}
           </button>

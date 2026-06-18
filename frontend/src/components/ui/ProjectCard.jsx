@@ -1,12 +1,33 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { iconTeam } from '@/assets/icons'
 import { getInitials } from '@/utils/helpers'
+import { API_URL, getToken } from '@/services/api'
 import styles from './ProjectCard.module.scss'
 
 export default function ProjectCard({ project }) {
+  const [doneTasks, setDoneTasks] = useState(0)
   const totalTasks = project._count?.tasks || 0
-  const doneTasks = project.tasks?.filter((t) => t.status === 'DONE').length || 0
+
+  useEffect(() => {
+    const fetchDoneTasks = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/projects/${project.id}/tasks`, {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        if (res.ok) {
+          const data = await res.json()
+          const done = (data.data.tasks || []).filter((t) => t.status === 'DONE').length
+          setDoneTasks(done)
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchDoneTasks()
+  }, [project.id])
+
   const progress = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0
   const owner = project.owner
   const others = project.members || []

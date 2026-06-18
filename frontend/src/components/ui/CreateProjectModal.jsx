@@ -78,7 +78,7 @@ export default function CreateProjectModal({ onClose, onSave }) {
         }
     }
 
-    const isValid = name.trim().length >= 2
+    const isValid = name.trim().length >= 2 && description.trim().length >= 2
 
     return (
         <div
