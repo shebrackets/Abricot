@@ -49,3 +49,15 @@
   color: #6b7280;
   padding: 20px 0;
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .board {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .column {
+    padding: 16px;
+  }
+}

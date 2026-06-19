@@ -141,16 +141,15 @@
   .nav {
     order: 3;
     width: 100%;
-    overflow-x: auto;
     gap: 8px;
   }
 
   .navItem {
+    flex: 1;
     padding: 10px 14px;
     font-size: $text-xs;
     gap: 6px;
     white-space: nowrap;
-    flex-shrink: 0;
   }
 
   .userIcon {

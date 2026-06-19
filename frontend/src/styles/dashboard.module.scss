@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin: 60px 0 30px;
 }
@@ -61,6 +61,35 @@
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: $border-radius-md;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-primary;
+  cursor: pointer;
+  border: none;
+  background: $color-white;
+  transition: background 0.15s;
+
+  &.active {
+    background: $color-primary-light;
+    color: $color-primary;
+  }
+
+  &:hover:not(.active) {
+    background: $color-grey-50;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }
 
 .statusFilterWrapper {
@@ -139,39 +168,48 @@
   }
 }
 
-.tab {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  border-radius: $border-radius-md;
-  font-family: $font-secondary;
-  font-size: $text-sm;
-  color: $color-primary;
-  cursor: pointer;
-  border: none;
-  background: $color-white;
-  transition: background 0.15s;
-
-  &.active {
-    background: $color-primary-light;
-    color: $color-primary;
-  }
-
-  &:hover:not(.active) {
-    background: $color-grey-50;
-  }
-
-  &:focus-visible {
-    outline: 2px solid $color-primary;
-    outline-offset: 2px;
-  }
-}
-
 .empty {
   text-align: center;
   font-family: $font-secondary;
   font-size: $text-base;
   color: $color-grey-600;
   padding: 40px 0;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin: 30px 0 20px;
+  }
+
+  .btnCreate {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .tabs {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .statusFilterWrapper {
+    width: 100%;
+  }
+
+  .statusFilter {
+    width: 100%;
+  }
 }
