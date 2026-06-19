@@ -1,7 +1,7 @@
 .panel {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
   padding: 40px 59px;
   margin-bottom: 60px;
 }
@@ -14,16 +14,16 @@
 }
 
 .panelTitle {
-  font-family: 'Manrope', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f1f1f;
+  font-family: $font-primary;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
 }
 
 .panelSubtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  color: #6b7280;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-grey-600;
   margin-top: 8px;
 }
 
@@ -31,9 +31,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-md;
   padding: 0 32px;
   width: 357px;
   height: 63px;
@@ -41,9 +41,9 @@
   input {
     border: none;
     outline: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #6b7280;
+    font-family: $font-secondary;
+    font-size: $text-sm;
+    color: $color-grey-600;
     background: transparent;
     width: 100%;
   }
@@ -57,9 +57,9 @@
 
 .empty {
   text-align: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  color: #6b7280;
+  font-family: $font-secondary;
+  font-size: $text-base;
+  color: $color-grey-600;
   padding: 40px 0;
 }
 

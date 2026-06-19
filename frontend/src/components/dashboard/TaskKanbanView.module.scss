@@ -6,9 +6,9 @@
 }
 
 .column {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  background: $color-white;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-lg;
   padding: 24px;
 }
 
@@ -20,20 +20,20 @@
 }
 
 .columnTitle {
-  font-family: 'Manrope', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f1f1f;
+  font-family: $font-primary;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $color-grey-800;
 }
 
 .columnCount {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 50px;
+  background: $color-grey-50;
+  border: 1px solid $color-grey-200;
+  border-radius: $border-radius-xl;
   padding: 2px 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: #6b7280;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
 }
 
 .columnTasks {
@@ -44,9 +44,9 @@
 
 .empty {
   text-align: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: #6b7280;
+  font-family: $font-secondary;
+  font-size: $text-sm;
+  color: $color-grey-600;
   padding: 20px 0;
 }
 
