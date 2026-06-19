@@ -25,7 +25,8 @@
   flex-direction: column;
   gap: 7px;
 
-  label {
+  label,
+  .fieldLabel {
     font-family: $font-secondary;
     font-size: $text-sm;
     font-weight: $font-regular;
@@ -48,11 +49,11 @@
     resize: none;
 
     &::placeholder {
-      color: $color-grey-400;
+      color: $color-grey-600;
     }
 
     &:focus {
-      border-color: $color-primary;
+      border-color: $color-primary-dark;
     }
   }
 
@@ -75,7 +76,7 @@
   cursor: pointer;
 
   &:focus-within {
-    border-color: $color-primary;
+    border-color: $color-primary-dark;
   }
 
   input {
@@ -154,8 +155,8 @@
 }
 
 .assigneeSelected {
-  background: $color-primary-light;
-  color: $color-primary;
+  background: $color-primary-dark-light;
+  color: $color-primary-dark;
 }
 
 .assigneeAvatar {
@@ -174,7 +175,7 @@
 
 .checkmark {
   margin-left: auto;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-bold;
 }
 
@@ -210,32 +211,31 @@
   font-size: $text-sm;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: opacity 0.15s;
-  opacity: 0.5;
+  transition: border-color 0.15s, box-shadow 0.15s;
 
   &:hover {
-    opacity: 0.8;
+    box-shadow: 0 0 0 1px currentColor inset;
   }
 }
 
 .statusSelected {
-  opacity: 1;
   border-color: currentColor;
+  font-weight: $font-semibold;
 }
 
 .todo {
   background: $color-danger-light;
-  color: $color-danger;
+  color: $color-danger-text;
 }
 
 .inProgress {
   background: $color-warning-light;
-  color: $color-warning;
+  color: $color-warning-text;
 }
 
 .done {
   background: $color-success-light;
-  color: $color-success;
+  color: $color-success-text;
 }
 
 .error {
@@ -251,7 +251,7 @@
   width: 244px;
   height: 50px;
   background: $color-grey-200;
-  color: $color-grey-400;
+  color: $color-grey-600;
   border: none;
   border-radius: $border-radius-lg;
   font-family: $font-secondary;

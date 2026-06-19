@@ -24,9 +24,7 @@ export default function Navbar({ user }) {
 
   return (
     <header className={styles.navbar}>
-      <Link href="/dashboard">
-        <Image src={logo} alt="Abricot - Accueil" width={147} height={19} className={styles.logo} />
-      </Link>
+      <Image src={logo} alt="Abricot" width={147} height={19} className={styles.logo} />
 
       <nav className={styles.nav} aria-label="Navigation principale">
         <Link

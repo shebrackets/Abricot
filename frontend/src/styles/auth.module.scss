@@ -2,7 +2,7 @@
   font-family: $font-primary;
   font-size: $text-4xl;
   font-weight: $font-bold;
-  color: $color-primary;
+  color: $color-primary-dark;
   text-align: center;
   width: 100%;
   margin: 0;
@@ -39,11 +39,11 @@
     color: $color-grey-800;
     transition: border-color 0.15s;
 
-    &::placeholder { color: $color-grey-400; }
+    &::placeholder { color: $color-grey-600; }
 
     &:focus {
       outline: none;
-      border-color: $color-primary;
+      border-color: $color-primary-dark;
       box-shadow: 0 0 0 3px rgba(211, 89, 11, 0.1);
     }
   }
@@ -69,7 +69,7 @@
 .btnForgot {
   font-family: $font-secondary;
   font-size: $text-sm;
-  color: $color-primary;
+  color: $color-primary-dark;
   text-decoration: underline;
   text-align: center;
 
@@ -96,7 +96,7 @@
   align-items: center;
 
   a {
-    color: $color-primary;
+    color: $color-primary-dark;
     text-decoration: underline;
     &:hover { opacity: 0.8; }
   }

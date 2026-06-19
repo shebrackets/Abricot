@@ -4,7 +4,7 @@ import { iconChevronDown, iconCalendar } from '@/assets/icons'
 import useClickOutside from '@/hooks/useClickOutside'
 import { getInitials } from '@/utils/helpers'
 import { API_URL, getToken } from '@/services/api'
-import styles from './EditTaskModal.module.scss'
+import styles from './CreateTaskModal.module.scss'
 
 const STATUS_OPTIONS = [
   { key: 'TODO', label: 'À faire', activeClass: 'todo' },
@@ -21,6 +21,8 @@ export default function CreateTaskModal({ projectId, projectMembers, onClose, on
   const [assigneesOpen, setAssigneesOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const dueDateRef = useRef(null)
 
   const isValid = title.trim().length >= 2 && description.trim().length >= 2 && dueDate.trim().length > 0
 
@@ -123,21 +125,25 @@ export default function CreateTaskModal({ projectId, projectMembers, onClose, on
 
             <div className={styles.field}>
               <label htmlFor="task-duedate">Échéance</label>
-              <div className={styles.dateField}>
+              <div
+                className={styles.dateField}
+                onClick={() => dueDateRef.current?.showPicker?.() ?? dueDateRef.current?.focus()}
+              >
                 <input
                   id="task-duedate"
+                  ref={dueDateRef}
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                 />
-                <label htmlFor="task-duedate" style={{ cursor: 'pointer' }}>
-                  <Image src={iconCalendar} alt="" width={15} height={17} aria-hidden="true" />
-                </label>
+                <span aria-hidden="true">
+                  <Image src={iconCalendar} alt="" width={15} height={17} />
+                </span>
               </div>
             </div>
 
             <div className={styles.field}>
-              <label id="assignees-label">Assigné à :</label>
+              <span id="assignees-label" className={styles.fieldLabel}>Assigné à :</span>
               <div
                 className={styles.assigneesWrapper}
                 ref={assigneesRef}

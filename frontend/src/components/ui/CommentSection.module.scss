@@ -61,7 +61,7 @@
 .date {
   font-family: $font-secondary;
   font-size: $text-xs;
-  color: $color-grey-600;
+  color: $color-grey-800;
 }
 
 .content {
@@ -110,7 +110,7 @@
   &:hover { background: $color-grey-200; }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -134,8 +134,8 @@
     resize: none;
     transition: border-color 0.15s;
 
-    &:focus { border-color: $color-primary; }
-    &::placeholder { color: $color-grey-400; }
+    &:focus { border-color: $color-primary-dark; }
+    &::placeholder { color: $color-grey-600; }
   }
 }
 
@@ -159,7 +159,7 @@
   &:hover { background: $color-grey-50; }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }

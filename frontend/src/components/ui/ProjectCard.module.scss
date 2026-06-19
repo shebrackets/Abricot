@@ -16,7 +16,7 @@
   }
 
   &:focus-within {
-    box-shadow: 0 0 0 2px $color-primary;
+    box-shadow: 0 0 0 2px $color-primary-dark;
   }
 }
 
@@ -97,7 +97,7 @@
 
 .progressFill {
   height: 100%;
-  background: $color-primary;
+  background: $color-primary-dark;
   border-radius: 40px;
   transition: width 0.3s;
 }
@@ -141,7 +141,7 @@
   width: 27px;
   height: 27px;
   border-radius: 50%;
-  background: $color-primary-light;
+  background: $color-primary-dark-light;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,8 +158,8 @@
 }
 
 .ownerTag {
-  background: $color-primary-light;
-  color: $color-primary;
+  background: $color-primary-dark-light;
+  color: $color-primary-dark;
   font-family: $font-secondary;
   font-size: $text-sm;
   padding: 4px 16px;

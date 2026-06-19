@@ -1,47 +1,49 @@
 // Brand
-$color-primary:       #d3590b;
-$color-primary-dark:  #b34a09;
-$color-primary-light: #ffe8d9;
+$color-primary-dark: #b34a09;
+$color-primary-dark-light: #ffe8d9;
 
 // Neutres
-$color-white:         #ffffff;
-$color-grey-50:       #f9fafb;
-$color-grey-100:      #f3f4f6;
-$color-grey-200:      #e5e7eb;
-$color-grey-400:      #9ca3af;
-$color-grey-600:      #6b7280;
-$color-grey-800:      #1f1f1f;
-$color-grey-950:      #0f0f0f;
-$color-black:         #000000;
+$color-white: #ffffff;
+$color-grey-50: #f9fafb;
+$color-grey-100: #f3f4f6;
+$color-grey-200: #e5e7eb;
+$color-grey-600: #6b7280;
+$color-grey-800: #1f1f1f;
+$color-grey-950: #0f0f0f;
+$color-black: #000000;
 
 // Feedback
-$color-danger:        #ef4444;
-$color-danger-bg:     #fef2f2;
+$color-danger: #ef4444;
+$color-danger-bg: #fef2f2;
 $color-danger-border: #fecaca;
-$color-danger-light:  #ffe0e0;
-$color-warning:       #e08d00;
+$color-danger-light: #ffe0e0;
+$color-danger-text: #a93226;
+$color-warning: #e08d00;
 $color-warning-light: #fff0d7;
-$color-success:       #22c55e;
+$color-warning-text: #92600a;
+
+$color-success: #22c55e;
 $color-success-light: #f0fdf4;
+$color-success-text: #15803d;
 
 // Typo
-$font-primary:   'Manrope', sans-serif;
+$font-primary: 'Manrope', sans-serif;
 $font-secondary: 'Inter', sans-serif;
 
-$text-xs:   12px;
-$text-sm:   14px;
+$text-xs: 12px;
+$text-sm: 14px;
 $text-base: 16px;
-$text-lg:   18px;
-$text-xl:   20px;
-$text-2xl:  24px;
-$text-4xl:  40px;
+$text-lg: 18px;
+$text-xl: 20px;
+$text-2xl: 24px;
+$text-4xl: 40px;
 
-$font-regular:  400;
+$font-regular: 400;
 $font-semibold: 600;
-$font-bold:     700;
+$font-bold: 700;
 
 // Border
-$border-color:     $color-grey-200;
+$border-color: $color-grey-200;
 $border-radius-sm: 4px;
 $border-radius-md: 8px;
 $border-radius-lg: 10px;

@@ -47,9 +47,9 @@
   font-size: $text-sm;
   white-space: nowrap;
 
-  &.todo { background: $color-danger-light; color: $color-danger; }
-  &.inProgress { background: $color-warning-light; color: $color-warning; }
-  &.done { background: $color-success-light; color: $color-success; }
+  &.todo { background: $color-danger-light; color: $color-danger-text; }
+  &.inProgress { background: $color-warning-light; color: $color-warning-text; }
+  &.done { background: $color-success-light; color: $color-success-text; }
 }
 
 .moreWrapper {
@@ -73,7 +73,7 @@
   &:hover { background: $color-grey-50; }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -130,7 +130,7 @@
 
 .assigneeName {
   background: $color-grey-200;
-  color: $color-grey-600;
+  color: $color-grey-800;
   font-family: $font-secondary;
   font-size: $text-sm;
   padding: 4px 16px;
@@ -154,7 +154,7 @@
   padding: 0;
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
     border-radius: $border-radius-sm;
   }
@@ -207,7 +207,7 @@
 }
 
 .moreDropdownSeparator {
-  color: $color-grey-200;
+  color: $color-grey-600;
   font-size: $text-base;
 }
 
@@ -232,14 +232,14 @@
   &:hover { color: $color-grey-800; }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
     border-radius: $border-radius-sm;
   }
 }
 
 .moreOptionDanger {
-  color: $color-danger;
+  color: $color-danger-text;
   &:hover { opacity: 0.8; }
 }
 

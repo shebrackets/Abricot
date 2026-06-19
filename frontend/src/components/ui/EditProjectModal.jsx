@@ -166,8 +166,14 @@ export default function EditProjectModal({ project, onClose, onSave, onDelete })
             </div>
 
             <div className={styles.field}>
-              <label id="contributors-label">Contributeurs</label>
-              <div className={styles.contributorsWrapper} ref={contributorsRef}>
+              <span id="contributors-label" className={styles.fieldLabel}>Contributeurs</span>
+              <div
+                className={styles.contributorsWrapper}
+                ref={contributorsRef}
+                role="combobox"
+                aria-expanded={contributorsOpen}
+                aria-labelledby="contributors-label"
+              >
                 <button
                   type="button"
                   className={styles.contributorsField}

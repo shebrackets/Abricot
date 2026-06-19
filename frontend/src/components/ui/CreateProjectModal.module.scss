@@ -46,11 +46,11 @@
     transition: border-color 0.15s;
 
     &::placeholder {
-      color: $color-grey-400;
+      color: $color-grey-600;
     }
 
     &:focus {
-      border-color: $color-primary;
+      border-color: $color-primary-dark;
     }
   }
 }
@@ -74,7 +74,7 @@
   font-family: $font-secondary;
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -120,14 +120,14 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: -2px;
   }
 }
 
 .contributorSelected {
-  background: $color-primary-light;
-  color: $color-primary;
+  background: $color-primary-dark-light;
+  color: $color-primary-dark;
 }
 
 .contributorAvatar {
@@ -146,7 +146,7 @@
 
 .checkmark {
   margin-left: auto;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-bold;
 }
 
@@ -154,7 +154,7 @@
   padding: 12px 16px;
   font-family: $font-secondary;
   font-size: $text-xs;
-  color: $color-grey-400;
+  color: $color-grey-600;
   text-align: center;
 }
 
@@ -171,7 +171,7 @@
   width: 181px;
   height: 50px;
   background: $color-grey-200;
-  color: $color-grey-400;
+  color: $color-grey-600;
   border: none;
   border-radius: $border-radius-lg;
   font-family: $font-secondary;

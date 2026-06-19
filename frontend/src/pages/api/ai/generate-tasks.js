@@ -41,12 +41,29 @@ Réponds uniquement avec un objet JSON au format suivant, sans texte avant ou ap
     const parsed = JSON.parse(content)
 
     if (!parsed.tasks || !Array.isArray(parsed.tasks)) {
-      return res.status(500).json({ message: 'Format de réponse invalide' })
+      return res.status(502).json({ message: 'Format de réponse IA invalide' })
     }
 
     return res.status(200).json({ tasks: parsed.tasks })
   } catch (err) {
     console.error('Erreur Mistral:', err)
+
+    // Distinction des erreurs pour un message clair côté utilisateur
+    const status = err?.statusCode || err?.status
+
+    if (status === 401) {
+      return res.status(500).json({ message: 'Clé API invalide ou expirée' })
+    }
+    if (status === 429) {
+      return res.status(429).json({ message: 'Quota IA dépassé, réessayez plus tard' })
+    }
+    if (status >= 500) {
+      return res.status(502).json({ message: 'Le service IA est momentanément indisponible' })
+    }
+    if (err instanceof SyntaxError) {
+      return res.status(502).json({ message: 'Réponse IA mal formée' })
+    }
+
     return res.status(500).json({ message: 'Erreur lors de la génération des tâches' })
   }
 }

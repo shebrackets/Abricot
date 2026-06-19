@@ -5,6 +5,7 @@ import ProjectCard from '@/components/ui/ProjectCard'
 import CreateProjectModal from '@/components/ui/CreateProjectModal'
 import useAuth from '@/hooks/useAuth'
 import useProjects from '@/hooks/useProjects'
+import Head from 'next/head'
 import styles from '@/styles/projects.module.scss'
 
 export default function ProjectsPage() {
@@ -20,6 +21,10 @@ export default function ProjectsPage() {
   if (loading) return <div style={{ padding: '2rem' }}>Chargement...</div>
 
   return (
+    <>
+      <Head>
+        <title>Mes projets - Abricot</title>
+      </Head>
     <DashboardLayout user={user}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
@@ -55,5 +60,6 @@ export default function ProjectsPage() {
         />
       )}
     </DashboardLayout>
+    </>
   )
 }

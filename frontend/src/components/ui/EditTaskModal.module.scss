@@ -48,11 +48,11 @@
     resize: none;
 
     &::placeholder {
-      color: $color-grey-400;
+      color: $color-grey-600;
     }
 
     &:focus {
-      border-color: $color-primary;
+      border-color: $color-primary-dark;
     }
   }
 
@@ -75,7 +75,7 @@
   cursor: pointer;
 
   &:focus-within {
-    border-color: $color-primary;
+    border-color: $color-primary-dark;
   }
 
   input {
@@ -154,8 +154,8 @@
 }
 
 .assigneeSelected {
-  background: $color-primary-light;
-  color: $color-primary;
+  background: $color-primary-dark-light;
+  color: $color-primary-dark;
 }
 
 .assigneeAvatar {
@@ -174,7 +174,7 @@
 
 .checkmark {
   margin-left: auto;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-bold;
 }
 
@@ -251,7 +251,7 @@
   width: 244px;
   height: 50px;
   background: $color-grey-200;
-  color: $color-grey-400;
+  color: $color-grey-600;
   border: none;
   border-radius: $border-radius-lg;
   font-family: $font-secondary;

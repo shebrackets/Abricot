@@ -50,7 +50,7 @@
 }
 
 .separator {
-  color: $color-grey-400;
+  color: $color-grey-600;
 }
 
 .right {
@@ -65,12 +65,21 @@
   border-radius: $border-radius-xl;
   font-family: $font-secondary;
   font-size: $text-sm;
-  white-space: nowrap;
-  flex-shrink: 0;
 
-  &.todo { background: $color-danger-light; color: $color-danger; }
-  &.inProgress { background: $color-warning-light; color: $color-warning; }
-  &.done { background: $color-success-light; color: $color-success; }
+  &.todo {
+    background: $color-danger-light;
+    color: $color-danger-text;
+  }
+
+  &.inProgress {
+    background: $color-warning-light;
+    color: $color-warning-text;
+  }
+
+  &.done {
+    background: $color-success-light;
+    color: $color-success-text;
+  }
 }
 
 .btn {
@@ -89,7 +98,9 @@
   justify-content: center;
   transition: opacity 0.15s;
 
-  &:hover { opacity: 0.85; }
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .kanbanCard {

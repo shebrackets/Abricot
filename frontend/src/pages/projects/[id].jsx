@@ -12,6 +12,7 @@ import useClickOutside from '@/hooks/useClickOutside'
 import { iconBack, iconList, iconCalendarOrange, iconSearch, iconChevronDown, iconStar } from '@/assets/icons'
 import { getInitials } from '@/utils/helpers'
 import { API_URL, getToken } from '@/services/api'
+import Head from 'next/head'
 import styles from '@/styles/project.module.scss'
 
 const STATUS_OPTIONS = [
@@ -35,6 +36,7 @@ export default function ProjectPage() {
   const [editingProject, setEditingProject] = useState(false)
   const [creatingTask, setCreatingTask] = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
+  const [aiError, setAiError] = useState('')
 
   const statusRef = useRef(null)
   useClickOutside(statusRef, () => setStatusOpen(false))
@@ -105,6 +107,7 @@ export default function ProjectPage() {
   const handleAIGenerate = async () => {
     if (aiLoading) return
     setAiLoading(true)
+    setAiError('')
     try {
       const res = await fetch('/api/ai/generate-tasks', {
         method: 'POST',
@@ -115,7 +118,11 @@ export default function ProjectPage() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.message)
+      if (!res.ok) throw new Error(data.message || 'Erreur lors de la génération des tâches')
+
+      if (!data.tasks || data.tasks.length === 0) {
+        throw new Error('Aucune tâche n\'a pu être générée')
+      }
 
       await Promise.all(
         data.tasks.map(async (task) => {
@@ -139,6 +146,7 @@ export default function ProjectPage() {
       )
     } catch (err) {
       console.error('Erreur génération IA:', err)
+      setAiError(err.message || 'Une erreur est survenue lors de la génération des tâches')
     } finally {
       setAiLoading(false)
     }
@@ -147,201 +155,212 @@ export default function ProjectPage() {
   if (loading || loadingProject) return <div style={{ padding: '2rem' }}>Chargement...</div>
 
   return (
-    <DashboardLayout user={user}>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <button
-            className={styles.backBtn}
-            onClick={() => router.push('/projects')}
-            aria-label="Retour aux projets"
-          >
-            <Image src={iconBack} alt="" width={15} height={10} />
-          </button>
-          <div className={styles.headerInfo}>
-            <div className={styles.titleRow}>
-              <h1 className={styles.projectName}>{project?.name}</h1>
-              {project?.owner?.id === user?.id && (
-                <button
-                  className={styles.editLink}
-                  onClick={() => setEditingProject(true)}
-                >
-                  Modifier
-                </button>
-              )}
-            </div>
-            <p className={styles.projectDescription}>{project?.description}</p>
-          </div>
-        </div>
-        <div className={styles.headerActions}>
-          <button
-            className={styles.btnCreate}
-            onClick={() => setCreatingTask(true)}
-          >
-            Créer une tâche
-          </button>
-          <button
-            className={styles.btnAI}
-            aria-label="Générer des tâches avec l'IA"
-            onClick={handleAIGenerate}
-            disabled={aiLoading}
-          >
-            <Image src={iconStar} alt="" width={21} height={21} aria-hidden="true" />
-            {aiLoading ? '...' : 'IA'}
-          </button>
-        </div>
-      </header>
-
-      <section className={styles.contributors} aria-label="Contributeurs du projet">
-        <div className={styles.contributorsLeft}>
-          <span className={styles.contributorsTitle}>Contributeurs</span>
-          <span className={styles.contributorsCount}>
-            {(project?.members?.length || 0) + 1} personnes
-          </span>
-        </div>
-        <ul className={styles.contributorsList} role="list">
-          {project?.owner && (
-            <li className={styles.contributorItem}>
-              <div className={`${styles.avatar} ${styles.owner}`}>
-                {getInitials(project.owner.name)}
+    <>
+      <Head>
+        <title>{project?.name || 'Projet'} - Abricot</title>
+      </Head>
+      <DashboardLayout user={user}>
+        <header className={styles.header}>
+          <div className={styles.headerLeft}>
+            <button
+              className={styles.backBtn}
+              onClick={() => router.push('/projects')}
+              aria-label="Retour aux projets"
+            >
+              <Image src={iconBack} alt="" width={15} height={10} />
+            </button>
+            <div className={styles.headerInfo}>
+              <div className={styles.titleRow}>
+                <h1 className={styles.projectName}>{project?.name}</h1>
+                {project?.owner?.id === user?.id && (
+                  <button
+                    className={styles.editLink}
+                    onClick={() => setEditingProject(true)}
+                  >
+                    Modifier
+                  </button>
+                )}
               </div>
-              <span className={styles.ownerTag}>Propriétaire</span>
-            </li>
-          )}
-          {project?.members?.map((m) => (
-            <li key={m.userId} className={styles.contributorItem}>
-              <div className={`${styles.avatar} ${styles.member}`}>
-                {getInitials(m.user?.name)}
-              </div>
-              <span className={styles.memberTag}>{m.user?.name}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className={styles.panel} aria-label="Tâches du projet">
-        <div className={styles.panelHeader}>
-          <div className={styles.panelLeft}>
-            <h2 className={styles.panelTitle}>Tâches</h2>
-            <p className={styles.panelSubtitle}>Par ordre de priorité</p>
-          </div>
-          <div className={styles.panelControls}>
-            <nav className={styles.tabs} aria-label="Vue des tâches">
-              <button
-                className={`${styles.tab} ${view === 'list' ? styles.active : ''}`}
-                onClick={() => setView('list')}
-                aria-pressed={view === 'list'}
-              >
-                <Image src={iconList} alt="" width={16} height={16} aria-hidden="true" />
-                Liste
-              </button>
-              <button
-                className={`${styles.tab} ${view === 'calendar' ? styles.active : ''}`}
-                onClick={() => setView('calendar')}
-                aria-pressed={view === 'calendar'}
-              >
-                <Image src={iconCalendarOrange} alt="" width={15} height={17} aria-hidden="true" />
-                Calendrier
-              </button>
-            </nav>
-
-            <div className={styles.statusFilterWrapper} ref={statusRef}>
-              <button
-                className={styles.statusFilter}
-                onClick={() => setStatusOpen(!statusOpen)}
-                aria-expanded={statusOpen}
-                aria-haspopup="listbox"
-              >
-                <span>{STATUS_OPTIONS.find((o) => o.key === statusFilter)?.label || 'Statut'}</span>
-                <Image
-                  src={iconChevronDown}
-                  alt=""
-                  width={16}
-                  height={8}
-                  className={`${styles.chevron} ${statusOpen ? styles.open : ''}`}
-                  aria-hidden="true"
-                />
-              </button>
-              {statusOpen && (
-                <ul className={styles.statusDropdown} role="listbox">
-                  {STATUS_OPTIONS.map((option) => (
-                    <li key={option.key} role="option" aria-selected={statusFilter === option.key}>
-                      <button
-                        className={`${styles.statusOption} ${statusFilter === option.key ? styles.statusActive : ''}`}
-                        onClick={() => { setStatusFilter(option.key); setStatusOpen(false) }}
-                      >
-                        {option.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div className={styles.search} role="search">
-              <label htmlFor="task-search" className="sr-only">Rechercher une tâche</label>
-              <input
-                id="task-search"
-                type="search"
-                placeholder="Rechercher une tâche"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                aria-label="Rechercher une tâche"
-              />
-              <Image src={iconSearch} alt="" width={14} height={14} aria-hidden="true" />
+              <p className={styles.projectDescription}>{project?.description}</p>
             </div>
           </div>
-        </div>
+          <div className={styles.headerActions}>
+            <button
+              className={styles.btnCreate}
+              onClick={() => setCreatingTask(true)}
+            >
+              Créer une tâche
+            </button>
+            <button
+              className={styles.btnAI}
+              aria-label="Générer des tâches avec l'IA"
+              onClick={handleAIGenerate}
+              disabled={aiLoading}
+            >
+              <Image src={iconStar} alt="" width={21} height={21} aria-hidden="true" />
+              {aiLoading ? 'Génération...' : 'IA'}
+            </button>
+          </div>
+        </header>
 
-        <ul className={styles.taskList} role="list">
-          {filteredTasks.length === 0 ? (
-            <li><p className={styles.empty}>Aucune tâche</p></li>
-          ) : (
-            filteredTasks.map((task) => (
-              <li key={task.id}>
-                <ProjectTaskCard
-                  task={task}
-                  user={user}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
+        {aiError && (
+          <p role="alert" className={styles.aiError}>
+            {aiError}
+          </p>
+        )}
+
+        <section className={styles.contributors} aria-label="Contributeurs du projet">
+          <div className={styles.contributorsLeft}>
+            <span className={styles.contributorsTitle}>Contributeurs</span>
+            <span className={styles.contributorsCount}>
+              {(project?.members?.length || 0) + 1} personnes
+            </span>
+          </div>
+          <ul className={styles.contributorsList} role="list">
+            {project?.owner && (
+              <li className={styles.contributorItem}>
+                <div className={`${styles.avatar} ${styles.owner}`}>
+                  {getInitials(project.owner.name)}
+                </div>
+                <span className={styles.ownerTag}>Propriétaire</span>
               </li>
-            ))
-          )}
-        </ul>
-      </section>
+            )}
+            {project?.members?.map((m) => (
+              <li key={m.userId} className={styles.contributorItem}>
+                <div className={`${styles.avatar} ${styles.member}`}>
+                  {getInitials(m.user?.name)}
+                </div>
+                <span className={styles.memberTag}>{m.user?.name}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      {editingTask && (
-        <EditTaskModal
-          task={editingTask}
-          projectId={id}
-          projectMembers={[
-            ...(project?.owner ? [{ userId: project.owner.id, user: project.owner }] : []),
-            ...(project?.members || []),
-          ]}
-          onClose={() => setEditingTask(null)}
-          onSave={handleSave}
-        />
-      )}
+        <section className={styles.panel} aria-label="Tâches du projet">
+          <div className={styles.panelHeader}>
+            <div className={styles.panelLeft}>
+              <h2 className={styles.panelTitle}>Tâches</h2>
+              <p className={styles.panelSubtitle}>Par ordre de priorité</p>
+            </div>
+            <div className={styles.panelControls}>
+              <nav className={styles.tabs} aria-label="Vue des tâches">
+                <button
+                  className={`${styles.tab} ${view === 'list' ? styles.active : ''}`}
+                  onClick={() => setView('list')}
+                  aria-pressed={view === 'list'}
+                >
+                  <Image src={iconList} alt="" width={16} height={16} aria-hidden="true" />
+                  Liste
+                </button>
+                <button
+                  className={`${styles.tab} ${view === 'calendar' ? styles.active : ''}`}
+                  onClick={() => setView('calendar')}
+                  aria-pressed={view === 'calendar'}
+                >
+                  <Image src={iconCalendarOrange} alt="" width={15} height={17} aria-hidden="true" />
+                  Calendrier
+                </button>
+              </nav>
 
-      {editingProject && (
-        <EditProjectModal
-          project={project}
-          onClose={() => setEditingProject(false)}
-          onSave={handleSaveProject}
-        />
-      )}
+              <div className={styles.statusFilterWrapper} ref={statusRef}>
+                <button
+                  className={styles.statusFilter}
+                  onClick={() => setStatusOpen(!statusOpen)}
+                  aria-expanded={statusOpen}
+                  aria-haspopup="listbox"
+                >
+                  <span>{STATUS_OPTIONS.find((o) => o.key === statusFilter)?.label || 'Statut'}</span>
+                  <Image
+                    src={iconChevronDown}
+                    alt=""
+                    width={16}
+                    height={8}
+                    className={`${styles.chevron} ${statusOpen ? styles.open : ''}`}
+                    aria-hidden="true"
+                  />
+                </button>
+                {statusOpen && (
+                  <ul className={styles.statusDropdown} role="listbox">
+                    {STATUS_OPTIONS.map((option) => (
+                      <li key={option.key} role="option" aria-selected={statusFilter === option.key}>
+                        <button
+                          className={`${styles.statusOption} ${statusFilter === option.key ? styles.statusActive : ''}`}
+                          onClick={() => { setStatusFilter(option.key); setStatusOpen(false) }}
+                        >
+                          {option.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
-      {creatingTask && (
-        <CreateTaskModal
-          projectId={id}
-          projectMembers={[
-            ...(project?.owner ? [{ userId: project.owner.id, user: project.owner }] : []),
-            ...(project?.members || []),
-          ]}
-          onClose={() => setCreatingTask(false)}
-          onSave={handleTaskCreated}
-        />
-      )}
-    </DashboardLayout>
+              <div className={styles.search} role="search">
+                <label htmlFor="task-search" className="sr-only">Rechercher une tâche</label>
+                <input
+                  id="task-search"
+                  type="search"
+                  placeholder="Rechercher une tâche"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  aria-label="Rechercher une tâche"
+                />
+                <Image src={iconSearch} alt="" width={14} height={14} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+
+          <ul className={styles.taskList} role="list">
+            {filteredTasks.length === 0 ? (
+              <li><p className={styles.empty}>Aucune tâche</p></li>
+            ) : (
+              filteredTasks.map((task) => (
+                <li key={task.id}>
+                  <ProjectTaskCard
+                    task={task}
+                    user={user}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </li>
+              ))
+            )}
+          </ul>
+        </section>
+
+        {editingTask && (
+          <EditTaskModal
+            task={editingTask}
+            projectId={id}
+            projectMembers={[
+              ...(project?.owner ? [{ userId: project.owner.id, user: project.owner }] : []),
+              ...(project?.members || []),
+            ]}
+            onClose={() => setEditingTask(null)}
+            onSave={handleSave}
+          />
+        )}
+
+        {editingProject && (
+          <EditProjectModal
+            project={project}
+            onClose={() => setEditingProject(false)}
+            onSave={handleSaveProject}
+          />
+        )}
+
+        {creatingTask && (
+          <CreateTaskModal
+            projectId={id}
+            projectMembers={[
+              ...(project?.owner ? [{ userId: project.owner.id, user: project.owner }] : []),
+              ...(project?.members || []),
+            ]}
+            onClose={() => setCreatingTask(false)}
+            onSave={handleTaskCreated}
+          />
+        )}
+      </DashboardLayout>
+    </>
   )
 }

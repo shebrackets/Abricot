@@ -45,7 +45,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -71,15 +71,15 @@
   border-radius: $border-radius-md;
   font-family: $font-secondary;
   font-size: $text-sm;
-  color: $color-primary;
+  color: $color-primary-dark;
   cursor: pointer;
   border: none;
   background: $color-white;
   transition: background 0.15s;
 
   &.active {
-    background: $color-primary-light;
-    color: $color-primary;
+    background: $color-primary-dark-light;
+    color: $color-primary-dark;
   }
 
   &:hover:not(.active) {
@@ -87,7 +87,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -113,7 +113,7 @@
   gap: 8px;
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: 2px;
   }
 }
@@ -149,14 +149,14 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-primary;
+    outline: 2px solid $color-primary-dark;
     outline-offset: -2px;
   }
 }
 
 .statusActive {
-  background: $color-primary-light;
-  color: $color-primary;
+  background: $color-primary-dark-light;
+  color: $color-primary-dark;
   font-weight: $font-semibold;
 }
 
