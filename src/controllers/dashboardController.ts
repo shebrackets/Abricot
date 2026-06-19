@@ -49,11 +49,20 @@ export const getAssignedTasks = async (
 
     const tasks = await prisma.task.findMany({
       where: {
-        assignees: {
-          some: {
-            userId: authReq.user.id,
+        OR: [
+          {
+            assignees: {
+              some: {
+                userId: authReq.user.id,
+              },
+            },
           },
-        },
+          {
+            project: {
+              ownerId: authReq.user.id,
+            },
+          },
+        ],
       },
       include: {
         project: {

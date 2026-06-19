@@ -12,7 +12,7 @@ export default function TaskListView({ tasks, search, onSearch }) {
     <section className={styles.panel} aria-label="Mes tâches assignées">
       <div className={styles.panelHeader}>
         <div>
-          <h2 className={styles.panelTitle}>Mes tâches assignées</h2>
+          <h2 className={styles.panelTitle}>Mes tâches</h2>
           <p className={styles.panelSubtitle}>Par ordre de priorité</p>
         </div>
         <div className={styles.search} role="search">
