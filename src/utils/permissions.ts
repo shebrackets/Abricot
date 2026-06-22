@@ -96,32 +96,6 @@ export const isProjectOwner = async (
 };
 
 /**
- * Vérifie si un utilisateur peut créer des tâches dans un projet
- * @param userId - ID de l'utilisateur
- * @param projectId - ID du projet
- * @returns true si l'utilisateur peut créer des tâches, false sinon
- */
-export const canCreateTasks = async (
-  userId: string,
-  projectId: string
-): Promise<boolean> => {
-  return await hasProjectAccess(userId, projectId);
-};
-
-/**
- * Vérifie si un utilisateur peut modifier/supprimer des tâches dans un projet
- * @param userId - ID de l'utilisateur
- * @param projectId - ID du projet
- * @returns true si l'utilisateur peut modifier des tâches, false sinon
- */
-export const canModifyTasks = async (
-  userId: string,
-  projectId: string
-): Promise<boolean> => {
-  return await hasProjectAccess(userId, projectId);
-};
-
-/**
  * Vérifie si un utilisateur peut modifier un projet
  * @param userId - ID de l'utilisateur
  * @param projectId - ID du projet

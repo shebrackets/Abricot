@@ -5,11 +5,7 @@ import {
   validateCreateTaskData,
   validateUpdateTaskData,
 } from "../utils/validation";
-import {
-  hasProjectAccess,
-  canCreateTasks,
-  canModifyTasks,
-} from "../utils/permissions";
+import { hasProjectAccess } from "../utils/permissions";
 import {
   sendSuccess,
   sendError,
@@ -87,7 +83,7 @@ export const createTask = async (
     }
 
     // Vérifier les permissions pour créer des tâches
-    const canCreate = await canCreateTasks(authReq.user.id, projectId);
+    const canCreate = await hasProjectAccess(authReq.user.id, projectId);
     if (!canCreate) {
       sendError(
         res,
@@ -413,7 +409,7 @@ export const updateTask = async (
     }
 
     // Vérifier les permissions pour modifier des tâches
-    const canModify = await canModifyTasks(authReq.user.id, projectId);
+    const canModify = await hasProjectAccess(authReq.user.id, projectId);
     if (!canModify) {
       sendError(
         res,
@@ -454,8 +450,15 @@ export const updateTask = async (
       }
     }
 
-    // Préparer les données de mise à jour
-    const updateData: any = {};
+    // Type explicite pour éviter updateData: any
+    const updateData: {
+      title?: string;
+      description?: string | null;
+      status?: string;
+      priority?: string;
+      dueDate?: Date | null;
+    } = {};
+
     if (title !== undefined) {
       updateData.title = title.trim();
     }
@@ -542,7 +545,7 @@ export const deleteTask = async (
     }
 
     // Vérifier les permissions pour modifier des tâches
-    const canModify = await canModifyTasks(authReq.user.id, projectId);
+    const canModify = await hasProjectAccess(authReq.user.id, projectId);
     if (!canModify) {
       sendError(
         res,

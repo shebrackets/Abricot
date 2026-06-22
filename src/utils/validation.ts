@@ -45,14 +45,12 @@ export const validateRegisterData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation de l'email
   if (!data.email) {
     errors.push({ field: "email", message: "L'email est requis" });
   } else if (!isValidEmail(data.email)) {
     errors.push({ field: "email", message: "Format d'email invalide" });
   }
 
-  // Validation du mot de passe
   if (!data.password) {
     errors.push({ field: "password", message: "Le mot de passe est requis" });
   } else if (!isValidPassword(data.password)) {
@@ -63,7 +61,6 @@ export const validateRegisterData = (data: {
     });
   }
 
-  // Validation du nom (optionnel)
   if (data.name && data.name.trim().length < 2) {
     errors.push({
       field: "name",
@@ -85,12 +82,10 @@ export const validateLoginData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation de l'email
   if (!data.email) {
     errors.push({ field: "email", message: "L'email est requis" });
   }
 
-  // Validation du mot de passe
   if (!data.password) {
     errors.push({ field: "password", message: "Le mot de passe est requis" });
   }
@@ -109,7 +104,6 @@ export const validateUpdateProfileData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation de l'email si fourni
   if (data.email !== undefined) {
     if (!data.email.trim()) {
       errors.push({ field: "email", message: "L'email ne peut pas être vide" });
@@ -118,7 +112,6 @@ export const validateUpdateProfileData = (data: {
     }
   }
 
-  // Validation du nom si fourni
   if (data.name !== undefined) {
     if (data.name.trim().length < 2) {
       errors.push({
@@ -142,7 +135,6 @@ export const validateUpdatePasswordData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du mot de passe actuel
   if (!data.currentPassword) {
     errors.push({
       field: "currentPassword",
@@ -150,7 +142,6 @@ export const validateUpdatePasswordData = (data: {
     });
   }
 
-  // Validation du nouveau mot de passe
   if (!data.newPassword) {
     errors.push({
       field: "newPassword",
@@ -164,7 +155,6 @@ export const validateUpdatePasswordData = (data: {
     });
   }
 
-  // Vérifier que le nouveau mot de passe est différent de l'actuel
   if (
     data.currentPassword &&
     data.newPassword &&
@@ -191,7 +181,6 @@ export const validateCreateProjectData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du nom
   if (!data.name) {
     errors.push({ field: "name", message: "Le nom du projet est requis" });
   } else if (data.name.trim().length < 2) {
@@ -206,7 +195,6 @@ export const validateCreateProjectData = (data: {
     });
   }
 
-  // Validation de la description
   if (data.description && data.description.trim().length > 500) {
     errors.push({
       field: "description",
@@ -214,7 +202,6 @@ export const validateCreateProjectData = (data: {
     });
   }
 
-  // Validation des contributeurs
   if (data.contributors) {
     if (!Array.isArray(data.contributors)) {
       errors.push({
@@ -247,7 +234,6 @@ export const validateUpdateProjectData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du nom si fourni
   if (data.name !== undefined) {
     if (!data.name.trim()) {
       errors.push({
@@ -267,7 +253,6 @@ export const validateUpdateProjectData = (data: {
     }
   }
 
-  // Validation de la description si fournie
   if (data.description !== undefined && data.description.trim().length > 500) {
     errors.push({
       field: "description",
@@ -292,7 +277,6 @@ export const validateCreateTaskData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du titre
   if (!data.title) {
     errors.push({ field: "title", message: "Le titre de la tâche est requis" });
   } else if (data.title.trim().length < 2) {
@@ -307,7 +291,6 @@ export const validateCreateTaskData = (data: {
     });
   }
 
-  // Validation de la description
   if (data.description && data.description.trim().length > 1000) {
     errors.push({
       field: "description",
@@ -315,7 +298,6 @@ export const validateCreateTaskData = (data: {
     });
   }
 
-  // Validation de la priorité
   if (
     data.priority &&
     !["LOW", "MEDIUM", "HIGH", "URGENT"].includes(data.priority)
@@ -326,7 +308,6 @@ export const validateCreateTaskData = (data: {
     });
   }
 
-  // Validation de la date d'échéance
   if (data.dueDate && !isValidDate(data.dueDate)) {
     errors.push({
       field: "dueDate",
@@ -334,7 +315,6 @@ export const validateCreateTaskData = (data: {
     });
   }
 
-  // Validation des assignations
   if (data.assigneeIds) {
     if (!Array.isArray(data.assigneeIds)) {
       errors.push({
@@ -371,7 +351,6 @@ export const validateUpdateTaskData = (data: {
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du titre si fourni
   if (data.title !== undefined) {
     if (!data.title.trim()) {
       errors.push({
@@ -391,7 +370,6 @@ export const validateUpdateTaskData = (data: {
     }
   }
 
-  // Validation de la description si fournie
   if (data.description !== undefined && data.description.trim().length > 1000) {
     errors.push({
       field: "description",
@@ -399,7 +377,6 @@ export const validateUpdateTaskData = (data: {
     });
   }
 
-  // Validation du statut si fourni
   if (
     data.status &&
     !["TODO", "IN_PROGRESS", "DONE", "CANCELLED"].includes(data.status)
@@ -410,7 +387,6 @@ export const validateUpdateTaskData = (data: {
     });
   }
 
-  // Validation de la priorité si fournie
   if (
     data.priority &&
     !["LOW", "MEDIUM", "HIGH", "URGENT"].includes(data.priority)
@@ -421,7 +397,6 @@ export const validateUpdateTaskData = (data: {
     });
   }
 
-  // Validation de la date d'échéance si fournie
   if (
     data.dueDate !== undefined &&
     data.dueDate &&
@@ -433,7 +408,6 @@ export const validateUpdateTaskData = (data: {
     });
   }
 
-  // Validation des assignations si fournies
   if (data.assigneeIds !== undefined) {
     if (!Array.isArray(data.assigneeIds)) {
       errors.push({
@@ -456,47 +430,16 @@ export const validateUpdateTaskData = (data: {
 };
 
 /**
- * Valide les données de création de commentaire
+ * Valide les données d'un commentaire (création et mise à jour).
+ * Fusion de validateCreateCommentData et validateUpdateCommentData qui étaient identiques.
  * @param data - Les données à valider
  * @returns Un tableau d'erreurs de validation
  */
-export const validateCreateCommentData = (data: {
+export const validateCommentData = (data: {
   content: string;
 }): ValidationError[] => {
   const errors: ValidationError[] = [];
 
-  // Validation du contenu
-  if (!data.content) {
-    errors.push({
-      field: "content",
-      message: "Le contenu du commentaire est requis",
-    });
-  } else if (data.content.trim().length < 1) {
-    errors.push({
-      field: "content",
-      message: "Le contenu du commentaire ne peut pas être vide",
-    });
-  } else if (data.content.trim().length > 2000) {
-    errors.push({
-      field: "content",
-      message: "Le contenu du commentaire ne peut pas dépasser 2000 caractères",
-    });
-  }
-
-  return errors;
-};
-
-/**
- * Valide les données de mise à jour de commentaire
- * @param data - Les données à valider
- * @returns Un tableau d'erreurs de validation
- */
-export const validateUpdateCommentData = (data: {
-  content: string;
-}): ValidationError[] => {
-  const errors: ValidationError[] = [];
-
-  // Validation du contenu
   if (!data.content) {
     errors.push({
       field: "content",

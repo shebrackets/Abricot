@@ -1,4 +1,7 @@
 import { Router } from "express";
+import { authenticateToken } from "../middleware/auth";
+
+// Tous les imports de controllers regroupés en haut du fichier
 import {
   createProject,
   getProjects,
@@ -8,7 +11,20 @@ import {
   addContributor,
   removeContributor,
 } from "../controllers/projectController";
-import { authenticateToken } from "../middleware/auth";
+import {
+  createTask,
+  getTasks,
+  getTask,
+  updateTask,
+  deleteTask,
+} from "../controllers/taskController";
+import {
+  createComment,
+  getComments,
+  getComment,
+  updateComment,
+  deleteComment,
+} from "../controllers/commentController";
 
 const router = Router();
 
@@ -76,14 +92,6 @@ router.delete(
 );
 
 // Routes pour les tâches
-import {
-  createTask,
-  getTasks,
-  getTask,
-  updateTask,
-  deleteTask,
-} from "../controllers/taskController";
-
 router.post("/:id/tasks", authenticateToken, createTask);
 
 /**
@@ -98,14 +106,6 @@ router.put("/:id/tasks/:taskId", authenticateToken, updateTask);
 router.delete("/:id/tasks/:taskId", authenticateToken, deleteTask);
 
 // Routes pour les commentaires
-import {
-  createComment,
-  getComments,
-  getComment,
-  updateComment,
-  deleteComment,
-} from "../controllers/commentController";
-
 router.post("/:id/tasks/:taskId/comments", authenticateToken, createComment);
 router.get("/:id/tasks/:taskId/comments", authenticateToken, getComments);
 router.get(

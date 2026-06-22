@@ -9,3 +9,6 @@ node_modules
 *.sqlite
 *.sqlite3
 dev.db
+
+# Code compilé TypeScript
+dist/

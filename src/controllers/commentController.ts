@@ -5,11 +5,8 @@ import {
   UpdateCommentRequest,
   AuthRequest,
 } from "../types";
-import {
-  validateCreateCommentData,
-  validateUpdateCommentData,
-} from "../utils/validation";
-import { hasProjectAccess, canModifyTasks } from "../utils/permissions";
+import { validateCommentData } from "../utils/validation";
+import { hasProjectAccess } from "../utils/permissions";
 import {
   sendSuccess,
   sendError,
@@ -37,7 +34,7 @@ export const createComment = async (
     }
 
     // Validation des données
-    const validationErrors = validateCreateCommentData({ content });
+    const validationErrors = validateCommentData({ content });
     if (validationErrors.length > 0) {
       sendValidationError(
         res,
@@ -247,7 +244,7 @@ export const updateComment = async (
     }
 
     // Validation des données
-    const validationErrors = validateUpdateCommentData({ content });
+    const validationErrors = validateCommentData({ content });
     if (validationErrors.length > 0) {
       sendValidationError(
         res,
@@ -364,8 +361,9 @@ export const deleteComment = async (
       return;
     }
 
-    // Vérifier que l'utilisateur est l'auteur du commentaire ou a les permissions de modération
-    const canModify = await canModifyTasks(authReq.user.id, projectId);
+    // L'auteur peut supprimer son commentaire,
+    // ou tout membre ayant accès au projet peut également le supprimer
+    const canModify = await hasProjectAccess(authReq.user.id, projectId);
     if (existingComment.authorId !== authReq.user.id && !canModify) {
       sendError(
         res,

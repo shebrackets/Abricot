@@ -20,8 +20,8 @@ export const generateToken = (userId: string, email: string): string => {
     throw new Error("JWT_SECRET is not defined in environment variables");
   }
 
-  // @ts-ignore - Ignorer l'erreur TypeScript pour jwt.sign
-  return jwt.sign(payload, secret, { expiresIn });
+  // Cast explicite au lieu de @ts-ignore
+  return jwt.sign(payload, secret as string, { expiresIn } as SignOptions);
 };
 
 /**

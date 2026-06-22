@@ -1,9 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
-import dotenv from "dotenv";
 
 // Routes
 import authRoutes from "./routes/authRoutes";
@@ -19,9 +21,6 @@ import { specs } from "./config/swagger";
 
 // Prisma singleton
 import prisma from "./lib/prisma";
-
-// Charger les variables d'environnement
-dotenv.config();
 
 // Créer l'application Express
 const app = express();
@@ -49,15 +48,17 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Documentation Swagger
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(specs, {
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "API Gestionnaire de Projets - Documentation",
-    customfavIcon: "/favicon.ico",
-  })
-);
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, {
+      customCss: ".swagger-ui .topbar { display: none }",
+      customSiteTitle: "API Gestionnaire de Projets - Documentation",
+      customfavIcon: "/favicon.ico",
+    })
+  );
+}
 
 // Routes
 app.use("/api/auth", authRoutes);

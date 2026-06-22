@@ -358,8 +358,8 @@ export const updateProfile = async (
       }
     }
 
-    // Préparer les données de mise à jour
-    const updateData: any = {};
+    // Type explicite pour éviter updateData: any
+    const updateData: { name?: string | null; email?: string } = {};
     if (name !== undefined) {
       updateData.name = name.trim() || null;
     }
