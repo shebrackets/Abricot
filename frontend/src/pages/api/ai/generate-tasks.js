@@ -5,10 +5,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Méthode non autorisée' })
   }
 
-  const { projectName, projectDescription } = req.body
+  const { projectName, projectDescription, userPrompt } = req.body
 
   if (!projectName) {
     return res.status(400).json({ message: 'Nom du projet requis' })
+  }
+
+  if (!userPrompt || !userPrompt.trim()) {
+    return res.status(400).json({ message: 'Le prompt utilisateur est requis' })
   }
 
   const apiKey = process.env.MISTRAL_API_KEY
@@ -18,10 +22,11 @@ export default async function handler(req, res) {
 
   const client = new Mistral({ apiKey })
 
-  const prompt = `Tu es un assistant de gestion de projet. Génère une liste de 5 tâches concrètes et actionables pour le projet suivant.
+  const prompt = `Tu es un assistant de gestion de projet. Génère une liste de 5 tâches concrètes et actionables en te basant sur les informations suivantes.
 
 Projet : ${projectName}
-${projectDescription ? `Description : ${projectDescription}` : ''}
+${projectDescription ? `Description du projet : ${projectDescription}` : ''}
+Besoin exprimé par l'utilisateur : ${userPrompt}
 
 Réponds uniquement avec un objet JSON au format suivant, sans texte avant ou après :
 {
@@ -47,23 +52,11 @@ Réponds uniquement avec un objet JSON au format suivant, sans texte avant ou ap
     return res.status(200).json({ tasks: parsed.tasks })
   } catch (err) {
     console.error('Erreur Mistral:', err)
-
-    // Distinction des erreurs pour un message clair côté utilisateur
     const status = err?.statusCode || err?.status
-
-    if (status === 401) {
-      return res.status(500).json({ message: 'Clé API invalide ou expirée' })
-    }
-    if (status === 429) {
-      return res.status(429).json({ message: 'Quota IA dépassé, réessayez plus tard' })
-    }
-    if (status >= 500) {
-      return res.status(502).json({ message: 'Le service IA est momentanément indisponible' })
-    }
-    if (err instanceof SyntaxError) {
-      return res.status(502).json({ message: 'Réponse IA mal formée' })
-    }
-
+    if (status === 401) return res.status(500).json({ message: 'Clé API invalide ou expirée' })
+    if (status === 429) return res.status(429).json({ message: 'Quota IA dépassé, réessayez plus tard' })
+    if (status >= 500) return res.status(502).json({ message: 'Le service IA est momentanément indisponible' })
+    if (err instanceof SyntaxError) return res.status(502).json({ message: 'Réponse IA mal formée' })
     return res.status(500).json({ message: 'Erreur lors de la génération des tâches' })
   }
 }

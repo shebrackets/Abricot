@@ -6,6 +6,7 @@ import ProjectTaskCard from '@/components/ui/ProjectTaskCard'
 import EditTaskModal from '@/components/ui/EditTaskModal'
 import EditProjectModal from '@/components/ui/EditProjectModal'
 import CreateTaskModal from '@/components/ui/CreateTaskModal'
+import IaTaskGeneratorModal from '@/components/ui/IaTaskGeneratorModal'
 import useAuth from '@/hooks/useAuth'
 import useProject from '@/hooks/useProject'
 import useClickOutside from '@/hooks/useClickOutside'
@@ -35,8 +36,7 @@ export default function ProjectPage() {
   const [editingTask, setEditingTask] = useState(null)
   const [editingProject, setEditingProject] = useState(false)
   const [creatingTask, setCreatingTask] = useState(false)
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiError, setAiError] = useState('')
+  const [iaModalOpen, setIaModalOpen] = useState(false)
 
   const statusRef = useRef(null)
   useClickOutside(statusRef, () => setStatusOpen(false))
@@ -73,19 +73,16 @@ export default function ProjectPage() {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${getToken()}` },
       })
-      if (res.ok) {
-        setTasks((prev) => prev.filter((t) => t.id !== task.id))
-      }
+      if (res.ok) setTasks((prev) => prev.filter((t) => t.id !== task.id))
     } catch (err) {
       console.error(err)
     }
   }
 
-  const handleSaveProject = async (updatedProject) => {
-    const token = getToken()
+  const handleSaveProject = async () => {
     try {
       const res = await fetch(`${API_URL}/api/projects/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${getToken()}` },
       })
       if (res.ok) {
         const data = await res.json()
@@ -104,52 +101,9 @@ export default function ProjectPage() {
     })
   }
 
-  const handleAIGenerate = async () => {
-    if (aiLoading) return
-    setAiLoading(true)
-    setAiError('')
-    try {
-      const res = await fetch('/api/ai/generate-tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          projectName: project?.name,
-          projectDescription: project?.description,
-        }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.message || 'Erreur lors de la génération des tâches')
-
-      if (!data.tasks || data.tasks.length === 0) {
-        throw new Error('Aucune tâche n\'a pu être générée')
-      }
-
-      await Promise.all(
-        data.tasks.map(async (task) => {
-          const taskRes = await fetch(`${API_URL}/api/projects/${id}/tasks`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${getToken()}`,
-            },
-            body: JSON.stringify({
-              title: task.title,
-              description: task.description,
-              status: 'TODO',
-              dueDate: null,
-              assigneeIds: [],
-            }),
-          })
-          const taskData = await taskRes.json()
-          if (taskRes.ok) handleTaskCreated(taskData.data.task)
-        })
-      )
-    } catch (err) {
-      console.error('Erreur génération IA:', err)
-      setAiError(err.message || 'Une erreur est survenue lors de la génération des tâches')
-    } finally {
-      setAiLoading(false)
-    }
+  // Reçoit le tableau de tâches créées par la modal IA
+  const handleAITasksCreated = (newTasks) => {
+    newTasks.forEach((task) => handleTaskCreated(task))
   }
 
   if (loading || loadingProject) return <div style={{ padding: '2rem' }}>Chargement...</div>
@@ -173,10 +127,7 @@ export default function ProjectPage() {
               <div className={styles.titleRow}>
                 <h1 className={styles.projectName}>{project?.name}</h1>
                 {project?.owner?.id === user?.id && (
-                  <button
-                    className={styles.editLink}
-                    onClick={() => setEditingProject(true)}
-                  >
+                  <button className={styles.editLink} onClick={() => setEditingProject(true)}>
                     Modifier
                   </button>
                 )}
@@ -185,29 +136,19 @@ export default function ProjectPage() {
             </div>
           </div>
           <div className={styles.headerActions}>
-            <button
-              className={styles.btnCreate}
-              onClick={() => setCreatingTask(true)}
-            >
+            <button className={styles.btnCreate} onClick={() => setCreatingTask(true)}>
               Créer une tâche
             </button>
             <button
               className={styles.btnAI}
               aria-label="Générer des tâches avec l'IA"
-              onClick={handleAIGenerate}
-              disabled={aiLoading}
+              onClick={() => setIaModalOpen(true)}
             >
               <Image src={iconStar} alt="" width={21} height={21} aria-hidden="true" />
-              {aiLoading ? 'Génération...' : 'IA'}
+              IA
             </button>
           </div>
         </header>
-
-        {aiError && (
-          <p role="alert" className={styles.aiError}>
-            {aiError}
-          </p>
-        )}
 
         <section className={styles.contributors} aria-label="Contributeurs du projet">
           <div className={styles.contributorsLeft}>
@@ -360,6 +301,15 @@ export default function ProjectPage() {
             onSave={handleTaskCreated}
           />
         )}
+
+        {iaModalOpen && project && (
+          <IaTaskGeneratorModal
+            project={{ id, name: project.name, description: project.description }}
+            onClose={() => setIaModalOpen(false)}
+            onTasksCreated={handleAITasksCreated}
+          />
+        )}
+
       </DashboardLayout>
     </>
   )
